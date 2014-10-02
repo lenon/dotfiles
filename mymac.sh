@@ -10,6 +10,7 @@ BREW_INSTALLER="https://raw.githubusercontent.com/Homebrew/install/master/instal
 BREW_PACKAGES="
   ag
   bash
+  bash-completion
   caskroom/cask/brew-cask
   git
   python
