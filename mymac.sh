@@ -6,6 +6,8 @@ if [ "$(uname)" != "Darwin" ]; then
   exit 0
 fi
 
+source ./lib/utils.sh
+
 BREW_INSTALLER="https://raw.githubusercontent.com/Homebrew/install/master/install"
 BREW_PACKAGES="
   ag
@@ -32,36 +34,48 @@ CASK_PACKAGES="
   transmission
 "
 
+e_header "Installing homebrew..."
+
 if command -v brew >/dev/null 2>&1; then
-  echo "Homebrew already installed"
+  e_success "Homebrew already installed"
 else
-  echo "Installing homebrew..."
-  ruby -e "$(curl -fsSL "${BREW_INSTALLER}")"
+  if ruby -e "$(curl -fsSL "${BREW_INSTALLER}")" >/dev/null; then
+    e_success "Homebrew installed"
+  fi
 fi
 
-echo "Installing homebrew packages..."
+e_header "Installing homebrew packages..."
 
 for package in $BREW_PACKAGES ; do
   if brew list "$package" >/dev/null 2>&1; then
-    echo "$package already installed"
+    e_success "$package already installed"
   else
-    brew install "$package"
+    e_header "Installing $package..."
+    if brew install "$package" >/dev/null; then
+      e_success "$package installed"
+    fi
   fi
 done
 
-echo "Installing cask packages..."
+e_header "Installing cask packages..."
 
 for package in $CASK_PACKAGES ; do
   if brew cask list "$package" >/dev/null 2>&1; then
-    echo "$package already installed"
+    e_success "$package already installed"
   else
-    brew cask install --appdir=/Applications "$package"
+    e_header "Installing $package..."
+    if brew cask install --appdir=/Applications "$package" >/dev/null; then
+      e_success "$package installed"
+    fi
   fi
 done
 
-brew cleanup
-brew cask alfred link
-brew cask cleanup
+e_header "Cleaning up..."
 
-echo "Done!"
+brew cleanup >/dev/null
+brew cask alfred link >/dev/null
+brew cask cleanup >/dev/null
+
+e_success "Done!"
+
 exit 1
