@@ -14,6 +14,7 @@ BREW_PACKAGES="
   bash
   bash-completion
   caskroom/cask/brew-cask
+  coreutils
   git
   python
   rename
