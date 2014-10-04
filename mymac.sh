@@ -17,6 +17,7 @@ BREW_PACKAGES="
   coreutils
   encfs
   git
+  gpg
   python
   rename
   tree
