@@ -57,6 +57,7 @@ done
 
 brew cleanup
 brew cask alfred link
+brew cask cleanup
 
 echo "Done!"
 exit 1
