@@ -20,6 +20,7 @@ BREW_PACKAGES="
 "
 CASK_PACKAGES="
   adium
+  alfred
   dropbox
   flux
   iterm2
@@ -55,6 +56,7 @@ for package in $CASK_PACKAGES ; do
 done
 
 brew cleanup
+brew cask alfred link
 
 echo "Done!"
 exit 1
