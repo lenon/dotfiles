@@ -24,8 +24,12 @@ CASK_PACKAGES="
   dropbox
   flux
   iterm2
+  macvim
   onepassword
+  spectacle
   spotify
+  the-unarchiver
+  transmission
 "
 
 if command -v brew >/dev/null 2>&1; then
