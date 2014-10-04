@@ -18,6 +18,7 @@ BREW_PACKAGES="
   encfs
   git
   gpg
+  openssl
   python
   rename
   tree
