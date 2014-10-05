@@ -6,7 +6,7 @@ if [ "$(uname)" != "Darwin" ]; then
   exit 1
 fi
 
-source ./lib/utils.sh
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/utils.sh"
 
 BREW_INSTALLER="https://raw.githubusercontent.com/Homebrew/install/master/install"
 BREW_PACKAGES="
