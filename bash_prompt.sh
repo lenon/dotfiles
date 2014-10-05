@@ -38,7 +38,7 @@ PS1+="\$(ps1_prompt)" # git repository information
 PS1+="${COLOR_WHITE} $ "
 PS1+="${COLOR_RESET}"
 
-PS2="\[${COLOR_YELLOW}\]→ \[${COLOR_RESET}\]"
+PS2="\[${COLOR_YELLOW}\]> \[${COLOR_RESET}\]"
 
 export PROMPT_COMMAND
 export PS1
