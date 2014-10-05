@@ -3,7 +3,7 @@ set -e
 
 if [ "$(uname)" != "Darwin" ]; then
   echo "This script only works on Mac OS X"
-  exit 0
+  exit 1
 fi
 
 source ./lib/utils.sh
