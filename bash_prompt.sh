@@ -18,7 +18,7 @@ ps1_prompt() {
 
     [ -n "${prompt}" ] && prompt=" [${prompt}]"
 
-    printf " ${COLOR_BLUE}$(git_branch_name)${COLOR_YELLOW}${prompt}${COLOR_RESET}"
+    printf " ${COLOR_BLUE}%s${COLOR_YELLOW}%s${COLOR_RESET}" "$(git_branch_name)" "${prompt}"
   fi
 }
 
