@@ -4,7 +4,7 @@ DOTFILES_ROOT=$(dirname "${BASH_SOURCE[0]}")
 source "${DOTFILES_ROOT}/lib/colors.sh"
 source "${DOTFILES_ROOT}/lib/git.sh"
 
-ps1_prompt() {
+git_info_for_ps1() {
   local prompt=""
 
   if is_a_git_repo; then
@@ -34,7 +34,7 @@ PROMPT_COMMAND=set_exitcode_color
 
 PS1="\[\033]0;\$(basename "\\w")\007\]" # show basename of the current directory as window title
 PS1+="\w" # current working directory
-PS1+="\$(ps1_prompt)" # git repository information
+PS1+="\$(git_info_for_ps1)" # git repository information
 PS1+="${COLOR_WHITE} $ "
 PS1+="${COLOR_RESET}"
 
