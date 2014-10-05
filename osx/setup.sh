@@ -82,4 +82,4 @@ brew cask cleanup >/dev/null
 
 e_success "Done!"
 
-exit 1
+exit 0
