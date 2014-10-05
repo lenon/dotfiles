@@ -9,8 +9,6 @@ fi
 source "$(dirname "${BASH_SOURCE[0]}")/../lib/utils.sh"
 
 BREW_INSTALLER="https://raw.githubusercontent.com/Homebrew/install/master/install"
-BREW_PACKAGES=$(cat config/brew_packages)
-CASK_PACKAGES=$(cat config/cask_packages)
 
 e_header "Installing homebrew..."
 
@@ -24,7 +22,7 @@ fi
 
 e_header "Installing homebrew packages..."
 
-for package in $BREW_PACKAGES ; do
+while read package; do
   if brew list "$package" >/dev/null 2>&1; then
     e_success "$package already installed"
   else
@@ -33,11 +31,11 @@ for package in $BREW_PACKAGES ; do
       e_success "$package installed"
     fi
   fi
-done
+done < config/brew_packages
 
 e_header "Installing cask packages..."
 
-for package in $CASK_PACKAGES ; do
+while read package; do
   if brew cask list "$package" >/dev/null 2>&1; then
     e_success "$package already installed"
   else
@@ -46,7 +44,7 @@ for package in $CASK_PACKAGES ; do
       e_success "$package installed"
     fi
   fi
-done
+done < config/cask_packages
 
 e_header "Cleaning up..."
 
