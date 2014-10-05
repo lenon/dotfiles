@@ -9,8 +9,8 @@ fi
 source "$(dirname "${BASH_SOURCE[0]}")/../lib/utils.sh"
 
 BREW_INSTALLER="https://raw.githubusercontent.com/Homebrew/install/master/install"
-BREW_PACKAGES=$(cat brew_packages)
-CASK_PACKAGES=$(cat cask_packages)
+BREW_PACKAGES=$(cat config/brew_packages)
+CASK_PACKAGES=$(cat config/cask_packages)
 
 e_header "Installing homebrew..."
 

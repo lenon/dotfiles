@@ -5,4 +5,4 @@ set -e
 while read domain; do
   plutil -convert xml1 -o - "${HOME}/Library/Preferences/${domain}" | \
     xmllint --format - > "./Library/Preferences/${domain}"
-done < plists
+done < config/plists
