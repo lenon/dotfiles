@@ -9,34 +9,8 @@ fi
 source "$(dirname "${BASH_SOURCE[0]}")/../lib/utils.sh"
 
 BREW_INSTALLER="https://raw.githubusercontent.com/Homebrew/install/master/install"
-BREW_PACKAGES="
-  ag
-  bash
-  bash-completion
-  caskroom/cask/brew-cask
-  coreutils
-  encfs
-  git
-  gpg
-  openssl
-  python
-  rename
-  tree
-  vim
-"
-CASK_PACKAGES="
-  adium
-  alfred
-  dropbox
-  flux
-  iterm2
-  macvim
-  onepassword
-  spectacle
-  spotify
-  the-unarchiver
-  transmission
-"
+BREW_PACKAGES=$(cat brew_packages)
+CASK_PACKAGES=$(cat cask_packages)
 
 e_header "Installing homebrew..."
 
