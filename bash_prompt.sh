@@ -5,7 +5,6 @@ source "${DOTFILES_ROOT}/lib/colors.sh"
 source "${DOTFILES_ROOT}/lib/git.sh"
 
 ps1_prompt() {
-  local branch_name=""
   local prompt=""
 
   if is_a_git_repo; then
