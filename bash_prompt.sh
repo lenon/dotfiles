@@ -18,7 +18,13 @@ git_info_for_ps1() {
 
     [ -n "${prompt}" ] && prompt=" [${prompt}]"
 
-    printf " ${COLOR_BLUE}%s${COLOR_YELLOW}%s${COLOR_RESET}" "$(git_branch_name)" "${prompt}"
+    # http://superuser.com/a/301355
+    printf " \001%s\002%s\001%s\002%s\001%s\002" \
+      "${COLOR_BLUE}" \
+      "$(git_branch_name)" \
+      "${COLOR_YELLOW}" \
+      "${prompt}" \
+      "${COLOR_RESET}"
   fi
 }
 
