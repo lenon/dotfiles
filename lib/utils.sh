@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-source ./lib/colors.sh
+source "$(dirname "${BASH_SOURCE[0]}")/colors.sh"
 
 e_header() {
   printf "${COLOR_RESET}%s\n" "$@"
