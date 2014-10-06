@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>SULastCheckTime</key>
+    <date>2014-10-05T04:47:19Z</date>
+    <key>disableCount</key>
+    <integer>0</integer>
+    <key>lateColorTemp</key>
+    <integer>6500</integer>
+    <key>location</key>
+    <string>-23.550520,-46.633309</string>
+    <key>locationTextField</key>
+    <string>São Paulo</string>
+    <key>locationType</key>
+    <string>L</string>
+    <key>moveToApplicationsFolderAlertSuppress</key>
+    <true/>
+    <key>nightColorTemp</key>
+    <integer>3400</integer>
+    <key>steptime</key>
+    <real>32</real>
+    <key>version</key>
+    <integer>3</integer>
+    <key>wakeTime</key>
+    <integer>480</integer>
+  </dict>
+</plist>
