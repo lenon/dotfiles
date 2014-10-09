@@ -3,6 +3,7 @@
 set -e
 
 while read domain; do
+  echo "Restoring ${domain}..."
   plutil -convert xml1 -o - "${HOME}/Library/Preferences/${domain}" | \
-    xmllint --format - > "./Library/Preferences/${domain}"
+    xmllint --format - > "Library/Preferences/${domain}"
 done < config/plists
