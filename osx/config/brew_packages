@@ -12,5 +12,6 @@ python
 rbenv
 rename
 ruby-build
+tmux
 tree
 vim
