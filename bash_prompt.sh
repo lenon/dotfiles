@@ -39,6 +39,7 @@ set_exitcode_color() {
 PROMPT_COMMAND=set_exitcode_color
 
 PS1="\[\033]0;\$(basename "\\w")\007\]" # show basename of the current directory as window title
+PS1+="\[${COLOR_WHITE}\]"
 PS1+="\w" # current working directory
 PS1+="\$(git_info_for_ps1)" # git repository information
 PS1+="\[${COLOR_WHITE}\] \$ "
