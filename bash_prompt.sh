@@ -30,9 +30,9 @@ git_info_for_ps1() {
 
 set_exitcode_color() {
   if [ "$?" = 0 ]; then
-    printf "\001${COLOR_WHITE}\002"
+    printf "\001%s\002" "${COLOR_WHITE}"
   else
-    printf "\001${COLOR_RED}\002"
+    printf "\001%s\002" "${COLOR_RED}"
   fi
 }
 
