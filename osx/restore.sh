@@ -4,6 +4,7 @@
 set -e
 
 while read domain; do
+  echo "Restoring ${domain}..."
   plutil -convert binary1 -o "${HOME}/Library/Preferences/${domain}" - \
-    < "./Library/Preferences/${domain}"
+    < "Library/Preferences/${domain}"
 done < config/plists
