@@ -6,8 +6,11 @@ coreutils
 encfs
 git
 gpg
+libyaml
 openssl
 python
+rbenv
 rename
+ruby-build
 tree
 vim
