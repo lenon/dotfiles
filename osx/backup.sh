@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Performs a backup of all .plist specified in "plists" file.
+# This script performs a backup of all .plist files listed in config/plists.
 set -e
 
 while read domain; do
