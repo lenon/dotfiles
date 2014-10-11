@@ -7,12 +7,12 @@ source "${DOTFILES_ROOT}/lib/git.sh"
 git_info_for_ps1() {
   local prompt=""
 
-  if is_a_git_repo; then
-    if ! is_dot_git; then
-      has_uncommitted_changes && prompt+="U"
-      has_unstaged_files && prompt+="M"
-      has_untracked_files && prompt+="?"
-      has_stashed_files && prompt+="S"
+  if git::repo?; then
+    if ! git::dot_dir?; then
+      git::uncommitted_changes? && prompt+="U"
+      git::unstaged_files? && prompt+="M"
+      git::untracked_files? && prompt+="?"
+      git::stashed_files? && prompt+="S"
     fi
 
     [ -n "${prompt}" ] && prompt=" [${prompt}]"
@@ -20,7 +20,7 @@ git_info_for_ps1() {
     # http://superuser.com/a/301355
     printf " \001%s\002%s\001%s\002%s\001%s\002" \
       "${COLOR_BLUE}" \
-      "$(git_branch_name)" \
+      "$(git::branch_name)" \
       "${COLOR_YELLOW}" \
       "${prompt}" \
       "${COLOR_RESET}"
