@@ -9,7 +9,6 @@ git_info_for_ps1() {
 
   if is_a_git_repo; then
     if ! is_dot_git; then
-      update_git_index
       has_uncommitted_changes && prompt+="U"
       has_unstaged_files && prompt+="M"
       has_untracked_files && prompt+="?"

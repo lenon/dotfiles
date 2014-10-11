@@ -36,7 +36,3 @@ git_branch_name() {
   git rev-parse --short HEAD 2> /dev/null || \
   echo "(unknown)"
 }
-
-update_git_index() {
-  git update-index --really-refresh -q >/dev/null 2>&1
-}
