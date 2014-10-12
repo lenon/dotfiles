@@ -36,3 +36,15 @@ function git::branch_name() {
   git rev-parse --short HEAD 2> /dev/null || \
   echo "(unknown)"
 }
+
+# Returns the latest tag sorted by version.
+function git::latest_tag() {
+  local prefix=${1-v}
+  local tag=$(
+    git tag --list --sort=-v:refname "${prefix}*" | \
+    sed -E -n '/[0-9]+(\.[0-9]+){2}/p' | \
+    head -n1
+  )
+
+  [ -n "${tag}" ] && echo "$tag"
+}
