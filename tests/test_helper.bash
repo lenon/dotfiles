@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source lib/git.sh
+source lib/utils.sh
 
 setup() {
   mkdir "${BATS_TMPDIR}/dotfiles_tests"
