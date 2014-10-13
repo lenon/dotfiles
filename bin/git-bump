@@ -16,9 +16,9 @@
 #
 set -e
 
-ROOT_DIR=$(dirname "${BASH_SOURCE[0]}")
-source "${ROOT_DIR}/../lib/git.sh"
-source "${ROOT_DIR}/../lib/utils.sh"
+dir=$(dirname "${BASH_SOURCE[0]}")
+source "${dir}/../lib/git.sh"
+source "${dir}/../lib/utils.sh"
 
 if ! git::repo?; then
   echo "Not a git repository."
@@ -28,24 +28,25 @@ fi
 echo "Fetching tags..."
 git fetch --tags >/dev/null 2>&1
 
-latest_tag=$(git::latest_tag "${1-v}" || true)
+prefix=${1-v} # "v" is the default prefix
+latest_tag=$(git::latest_tag "$prefix" || :)
 
-if [ -n "$latest_tag" ]; then
-  new_tag=$(semver::increment_patch "$latest_tag")
-
-  printf "The current tag is\n\t%s\n" "$latest_tag"
-  printf "The new tag will be\n\t%s\n" "$new_tag"
-
-  read -n1 -p "Press [y] to continue..." -r key
-  echo ""
-
-  if [ "${key}" = "y" ]; then
-    git tag "${new_tag}" -m "${new_tag}"
-  else
-    echo "Aborted"
-    exit 1
-  fi
-else
+if [ -z "$latest_tag" ]; then
   echo "No previous tag found."
   exit 1
 fi
+
+new_tag=$(semver::increment_patch "$latest_tag")
+
+printf "The current tag is\n\t%s\n" "$latest_tag"
+printf "The new tag will be\n\t%s\n" "$new_tag"
+
+read -n1 -p "Press [y] to continue..." -r key
+echo ""
+
+if [ "${key}" != "y" ]; then
+  echo "Aborted"
+  exit 1
+fi
+
+git tag "${new_tag}" -m "${new_tag}"
