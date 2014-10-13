@@ -1,4 +1,19 @@
 #!/usr/bin/env bash
+#
+# This script takes the latest git tag (whose format follows the rules of
+# semantic versioning), increments the patch number and then creates a new git
+# tag using this incremented version.
+#
+# Suppose that you have the following tag on your repo:
+#   v1.0.0
+# Doing a `git bump`, the following tag will be created:
+#   v1.0.1
+#
+# You can also pass a "matcher" (or a prefix) to search for different tags:
+#   git bump v
+#   git bump stable
+#   git bump testing
+#
 set -e
 
 ROOT_DIR=$(dirname "${BASH_SOURCE[0]}")
