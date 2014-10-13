@@ -20,6 +20,11 @@ ROOT_DIR=$(dirname "${BASH_SOURCE[0]}")
 source "${ROOT_DIR}/../lib/git.sh"
 source "${ROOT_DIR}/../lib/utils.sh"
 
+if ! git::repo?; then
+  echo "Not a git repository."
+  exit 1
+fi
+
 echo "Fetching tags..."
 git fetch --tags >/dev/null 2>&1
 
