@@ -26,7 +26,7 @@ source "${dir}/../lib/git.sh"
 source "${dir}/../lib/utils.sh"
 
 if ! git::repo?; then
-  echo "Not a git repository."
+  echo "Not a git repository." >&2
   exit 1
 fi
 
@@ -69,7 +69,7 @@ git fetch --tags >/dev/null 2>&1
 latest_tag=$(git::latest_tag "${1-$prefix}" || :)
 
 if [ -z "$latest_tag" ]; then
-  echo "No previous tag found."
+  echo "No previous tag found." >&2
   exit 1
 fi
 
@@ -82,7 +82,7 @@ read -n1 -p "Press [y] to continue..." -r key
 echo ""
 
 if [ "${key}" != "y" ]; then
-  echo "Aborted"
+  echo "Aborted" >&2
   exit 1
 fi
 
