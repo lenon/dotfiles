@@ -46,19 +46,19 @@ prefix=v
 
 # Parse options
 while getopts "hi:" OPTION; do
-    case $OPTION in
+  case $OPTION in
     i)
-        increment=$OPTARG
-        ;;
+      increment=$OPTARG
+      ;;
     h)
-        usage
-        exit 0
-        ;;
+      usage
+      exit 0
+      ;;
     *)
-        usage
-        exit 1
-        ;;
-    esac
+      usage
+      exit 1
+      ;;
+  esac
 done
 
 shift "$((OPTIND-1))" # shift off the options and optional --
