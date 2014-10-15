@@ -38,8 +38,8 @@ fi
 
 new_tag=$(semver::increment_patch "$latest_tag")
 
-printf "The current tag is\n\t%s\n" "$latest_tag"
-printf "The new tag will be\n\t%s\n" "$new_tag"
+echo "The current tag is ${latest_tag}"
+echo "The new tag will be ${new_tag}"
 
 read -n1 -p "Press [y] to continue..." -r key
 echo ""
