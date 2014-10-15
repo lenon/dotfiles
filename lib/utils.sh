@@ -15,7 +15,7 @@ e_error() {
 
 function semver::parse() {
   local re="\([a-zA-Z_-]\{1,\}\)\([0-9]\{1,\}\)[.]\([0-9]\{1,\}\)[.]\([0-9]\{1,\}\)"
-  local str=$(echo "$@" | sed -n "s/${re}/\1 \2 \3 \4/p")
+  local str=$(sed -n "s/${re}/\1 \2 \3 \4/p" <<< "$@")
   [ -n "$str" ] && echo "$str"
 }
 
