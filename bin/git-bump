@@ -25,18 +25,50 @@ if ! git::repo?; then
   exit 1
 fi
 
+usage() {
+  cat <<EOF
+usage: git bump [-h] [-i <number>] [<prefix>]
+example:
+  git bump              (bump from v0.0.0 to v0.0.1)
+  git bump stable       (bump from stable0.0.0 to stable0.0.1)
+  git bump -i 2 stable  (bump from stable0.0.0 to stable0.0.2)
+EOF
+}
+
+# Defaults
+increment=1
+prefix=v
+
+# Parse options
+while getopts "hi:" OPTION; do
+    case $OPTION in
+    i)
+        increment=$OPTARG
+        ;;
+    h)
+        usage
+        exit 0
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+shift "$((OPTIND-1))" # shift off the options and optional --
+
 echo "Fetching tags..."
 git fetch --tags >/dev/null 2>&1
 
-prefix=${1-v} # "v" is the default prefix
-latest_tag=$(git::latest_tag "$prefix" || :)
+latest_tag=$(git::latest_tag "${1-$prefix}" || :)
 
 if [ -z "$latest_tag" ]; then
   echo "No previous tag found."
   exit 1
 fi
 
-new_tag=$(semver::increment_patch "$latest_tag")
+new_tag=$(semver::increment_patch "$latest_tag" "$increment")
 
 echo "The current tag is ${latest_tag}"
 echo "The new tag will be ${new_tag}"
