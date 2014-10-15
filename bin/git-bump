@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # This script takes the latest git tag (whose format follows the rules of
-# semantic versioning), increments the patch number and then creates a new git
+# semantic versioning), increments its patch number and then creates a new git
 # tag using this incremented version.
 #
 # Suppose that you have the following tag on your repo:
@@ -9,10 +9,15 @@
 # Doing a `git bump`, the following tag will be created:
 #   v1.0.1
 #
-# You can also pass a "matcher" (or a prefix) to search for different tags:
-#   git bump v
-#   git bump stable
-#   git bump testing
+# You can also pass a "matcher" (or a prefix) that will be used to filter
+# different tags:
+#   git bump v       (will match "v0.0.0" but not "b0.0.0")
+#   git bump stable  (will match "stable0.0.0" but not "v0.0.0")
+#
+# By default this script increments the patch number by 1. You can change this
+# behavior with the `-i` option:
+#
+#   git bump -i 2  (will increment the version from "v0.0.0" to "v0.0.2")
 #
 set -e
 
