@@ -20,11 +20,12 @@ function semver::parse() {
 }
 
 function semver::increment_patch() {
-  local parsed="$(semver::parse "${@}")"
+  local parsed=$(semver::parse "${1}")
+  local increment=${2-1}
 
   if [ -n "$parsed" ]; then
     read prefix major minor patch <<< "${parsed}"
-    echo "${prefix}${major}.${minor}.$((patch + 1))"
+    echo "${prefix}${major}.${minor}.$((patch + increment))"
   else
     return 1
   fi

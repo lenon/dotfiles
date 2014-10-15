@@ -42,3 +42,10 @@ load test_helper
   [ "$output" = "v1.0.1" ]
   [ "$status" -eq 0 ]
 }
+
+@test "semver::increment_patch with a custom increment number" {
+  run semver::increment_patch "v1.0.0" 2
+
+  [ "$output" = "v1.0.2" ]
+  [ "$status" -eq 0 ]
+}
