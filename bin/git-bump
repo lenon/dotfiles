@@ -25,7 +25,7 @@ source "${dir}/../lib/git.sh"
 source "${dir}/../lib/utils.sh"
 
 if ! git::repo?; then
-  echo "Not a git repository." >&2
+  echo 'Not a git repository.' >&2
   exit 1
 fi
 
@@ -44,7 +44,7 @@ increment=1
 prefix=v
 
 # Parse options
-while getopts "hi:" OPTION; do
+while getopts 'hi:' OPTION; do
   case $OPTION in
     i)
       increment=$OPTARG
@@ -60,15 +60,15 @@ while getopts "hi:" OPTION; do
   esac
 done
 
-shift "$((OPTIND-1))" # shift off the options and optional --
+shift $((OPTIND-1)) # shift off the options and optional --
 
-echo "Fetching tags..."
+echo 'Fetching tags...'
 git fetch --tags >/dev/null 2>&1
 
 latest_tag=$(git::latest_tag "${1-$prefix}" || :)
 
-if [ -z "$latest_tag" ]; then
-  echo "No previous tag found." >&2
+if [ -z "${latest_tag}" ]; then
+  echo 'No previous tag found.' >&2
   exit 1
 fi
 
@@ -77,11 +77,11 @@ new_tag=$(semver::increment_patch "$latest_tag" "$increment")
 echo "The current tag is ${latest_tag}"
 echo "The new tag will be ${new_tag}"
 
-read -n1 -p "Press [y] to continue..." -r key
+read -n1 -p 'Press [y] to continue...' -r key
 echo ""
 
-if [ "${key}" != "y" ]; then
-  echo "Aborted" >&2
+if [ "${key}" != 'y' ]; then
+  echo 'Aborted' >&2
   exit 1
 fi
 
