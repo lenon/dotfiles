@@ -86,3 +86,5 @@ if [ "${key}" != 'y' ]; then
 fi
 
 git tag "${new_tag}" -m "${new_tag}"
+git push origin "${new_tag}"
+echo 'Done. Pushed to origin.'
