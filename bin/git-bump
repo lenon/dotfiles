@@ -78,7 +78,7 @@ echo "The current tag is ${latest_tag}"
 echo "The new tag will be ${new_tag}"
 
 read -n1 -p 'Press [y] to continue...' -r key
-echo ""
+echo
 
 if [ "${key}" != 'y' ]; then
   echo 'Aborted' >&2
