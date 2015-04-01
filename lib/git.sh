@@ -41,7 +41,7 @@ function git::branch_name() {
 function git::latest_tag() {
   local prefix=${1-v}
   local tag=$(
-    git tag --list --sort=-v:refname "${prefix}*" | \
+    git tag --list --sort=-v:refname "${prefix}[0-9]*" | \
     sed -E -n '/[0-9]+(\.[0-9]+){2}/p' | \
     head -n1
   )
