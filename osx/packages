@@ -4,5 +4,6 @@ git
 ag
 tmux
 openssl
+homebrew/dupes/openssh
 python
 tree
