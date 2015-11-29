@@ -80,18 +80,15 @@ else
   end
 end
 
-packages = File.readlines('packages').map(&:strip)
-casks = File.readlines('casks').map(&:strip)
-
-info 'Installing Homebrew packages...'
-
-packages.each do |pkg|
-  if Homebrew.pkg_installed?(pkg)
+# Installs a package. "check" is a lambda used to check if the package is
+# installed and "install" is a lambda that performs the installation.
+def install_pkg(pkg, check, install)
+  if check.call(pkg)
     info "#{pkg} is already installed, skipping"
   else
     info "Installing #{pkg}"
 
-    if Homebrew.install_pkg(pkg) && Homebrew.pkg_installed?(pkg)
+    if install.call(pkg) && check.call(pkg)
       info "#{pkg} installed"
     else
       abort "#{pkg} was not installed due to a problem"
@@ -99,20 +96,26 @@ packages.each do |pkg|
   end
 end
 
+info 'Installing Homebrew packages...'
+
+packages = File.readlines('packages').map(&:strip)
+packages.each do |pkg|
+  perform_install(
+    pkg,
+    ->(p) { Homebrew.pkg_installed?(p) },
+    ->(p) { Homebrew.install_pkg(p) }
+  )
+end
+
 info 'Installing cask packages...'
 
+casks = File.readlines('casks').map(&:strip)
 casks.each do |pkg|
-  if Cask.pkg_installed?(pkg)
-    info "#{pkg} is already installed, skipping"
-  else
-    info "Installing #{pkg}"
-
-    if Cask.install_pkg(pkg) && Cask.pkg_installed?(pkg)
-      info "#{pkg} installed"
-    else
-      abort "#{pkg} was not installed due to a problem"
-    end
-  end
+  perform_install(
+    pkg,
+    ->(p) { Cask.pkg_installed?(p) },
+    ->(p) { Cask.install_pkg(p) }
+  )
 end
 
 info 'Cleaning old packages...'
