@@ -1,69 +1,10 @@
 #!/usr/bin/env ruby
+require_relative 'lib/os'
+require_relative 'lib/homebrew'
+require_relative 'lib/cask'
 
 def info(str)
   STDERR.puts str
-end
-
-# OS helpers.
-module OS
-  module_function
-
-  # Returns false if the current OS is not Mac OS X.
-  def mac?
-    RUBY_PLATFORM.downcase.include? 'darwin'
-  end
-end
-
-# Homebrew is a package manager for OS X. This module provides some functions
-# to check if it is installed, to install it and to install its packages.
-module Homebrew
-  module_function
-
-  # Returns true if Homebrew is installed.
-  def installed?
-    system 'command -v brew >/dev/null 2>&1'
-  end
-
-  # Installs Homebrew.
-  def install
-    system 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
-  end
-
-  # Returns true if a Homebrew package is installed.
-  def pkg_installed?(pkg)
-    system "brew list #{pkg} >/dev/null 2>&1"
-  end
-
-  # Installs a Homebrew package.
-  def install_pkg(pkg)
-    system "brew install #{pkg}"
-  end
-
-  # Clean up old Homebrew packages.
-  def cleanup
-    system 'brew cleanup >/dev/null 2>&1'
-  end
-end
-
-# Cask is a package manager for GUI apps on OS X. It is an extension for
-# Homebrew.
-module Cask
-  module_function
-
-  # Returns true if a Cask package is installed.
-  def pkg_installed?(pkg)
-    system "brew cask list #{pkg} >/dev/null 2>&1"
-  end
-
-  # Installs a Cask package.
-  def install_pkg(pkg)
-    system "brew cask install --appdir=/Applications #{pkg}"
-  end
-
-  # Clean up old Cask packages.
-  def cleanup
-    system 'brew cask cleanup >/dev/null 2>&1'
-  end
 end
 
 abort 'This script only works on Mac OS X' unless OS.mac?
