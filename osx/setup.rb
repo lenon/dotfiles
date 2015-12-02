@@ -98,7 +98,7 @@ end
 
 info 'Installing Homebrew packages...'
 
-packages = File.readlines(File.join(__dir__, 'packages')).map(&:strip)
+packages = File.readlines(File.join(__dir__, 'config/packages')).map(&:strip)
 packages.each do |pkg|
   install_pkg(
     pkg,
@@ -109,7 +109,7 @@ end
 
 info 'Installing cask packages...'
 
-casks = File.readlines(File.join(__dir__, 'casks')).map(&:strip)
+casks = File.readlines(File.join(__dir__, 'config/casks')).map(&:strip)
 casks.each do |pkg|
   install_pkg(
     pkg,

@@ -8,7 +8,7 @@ class Plist
   def initialize(file)
     @basename = File.basename(file)
     @source = File.expand_path(File.join(PREF_DIR, file))
-    @dest = File.expand_path(File.join(__dir__, 'backup', @basename))
+    @dest = File.expand_path(File.join(__dir__, '../backup', @basename))
   end
 
   # Copy a .plist file from the Preferences folder to ./backup. It also
