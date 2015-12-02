@@ -100,7 +100,7 @@ info 'Installing Homebrew packages...'
 
 packages = File.readlines('packages').map(&:strip)
 packages.each do |pkg|
-  perform_install(
+  install_pkg(
     pkg,
     ->(p) { Homebrew.pkg_installed?(p) },
     ->(p) { Homebrew.install_pkg(p) }
@@ -111,7 +111,7 @@ info 'Installing cask packages...'
 
 casks = File.readlines('casks').map(&:strip)
 casks.each do |pkg|
-  perform_install(
+  install_pkg(
     pkg,
     ->(p) { Cask.pkg_installed?(p) },
     ->(p) { Cask.install_pkg(p) }
