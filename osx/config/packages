@@ -7,3 +7,4 @@ openssl
 homebrew/dupes/openssh
 python
 tree
+fish
