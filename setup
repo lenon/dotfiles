@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+ln -sf ~/dotfiles/.config/fish/config.fish ~/.config/fish/config.fish
+chsh -s /usr/local/bin/fish
