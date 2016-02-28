@@ -8,3 +8,5 @@ set fish_pager_color_description yellow
 set fish_color_param white
 
 status --is-interactive; and . (rbenv init -|psub)
+
+set --export NVIM_TUI_ENABLE_TRUE_COLOR 1
