@@ -5,6 +5,7 @@ git
 homebrew/dupes/openssh
 openssl
 python
+rbenv
 tmux
 tree
 vim
