@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-mkdir ~/.config/fish
+mkdir -p ~/.config/fish
 ln -sf ~/dotfiles/.config/fish/config.fish ~/.config/fish/config.fish
 
 sudo chsh -s /usr/local/bin/fish $(whoami)
