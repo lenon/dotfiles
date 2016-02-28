@@ -1,5 +1,6 @@
 set --export EDITOR vim
 set --export PATH /usr/local/bin $PATH
+set --export PATH /usr/local/sbin $PATH
 
 set fish_color_command white
 set fish_color_autosuggestion yellow
