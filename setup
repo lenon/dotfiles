@@ -4,4 +4,4 @@ set -e
 sudo chsh -s /usr/local/bin/fish $(whoami)
 ./osx/setup.rb
 
-stow fish
+stow fish --no-folding --verbose
