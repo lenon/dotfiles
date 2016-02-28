@@ -2,6 +2,7 @@ ag
 fish
 git
 homebrew/dupes/openssh
+neovim/neovim/neovim
 openssl
 python
 rbenv
