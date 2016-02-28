@@ -6,6 +6,7 @@ neovim/neovim/neovim
 openssl
 python
 rbenv
+stow
 tmux
 tree
 vim
