@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-sudo chsh -s /usr/local/bin/fish $(whoami)
 ./osx/setup.rb
+sudo chsh -s /usr/local/bin/fish $(whoami)
 
 stow fish --no-folding --verbose
