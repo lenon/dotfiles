@@ -32,6 +32,7 @@ set --global __fish_git_prompt_char_stagedstate '±'
 set --global __fish_git_prompt_char_stateseparator ' '
 set --global __fish_git_prompt_show_informative_status 1
 set --global __fish_git_prompt_showcolorhints 1
+set --global __fish_git_prompt_color $fish_color_cwd
 
 # hostname cache
 if not set --query __fish_prompt_hostname
