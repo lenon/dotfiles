@@ -17,6 +17,7 @@ BREW_PACKAGES = [
     'neovim/neovim/neovim',
     'openssl',
     'python',
+    'python3',
     'rbenv',
     'stow',
     'tmux',
