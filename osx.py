@@ -67,6 +67,11 @@ def execute(*args):
     else:
         print('error')
 
+def write_setting(*args):
+    args = ('defaults', 'write') + args
+    printn(' '.join(args))
+    execute(*args)
+
 print('== Homebrew setup ==')
 
 printn('Make sure xcode command line tools are installed...')
@@ -106,3 +111,26 @@ execute('sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin())
 
 printn('Linking fish files...')
 execute('stow', 'fish', '--no-folding')
+
+print('== OS X settings ==')
+print('== Dock settings ==')
+
+# enable a hover effect for stack folders in grid view
+write_setting('com.apple.dock', 'mouse-over-hilite-stack', '-bool', 'true')
+# set the icon size of dock items to 36 pixels
+write_setting('com.apple.dock', 'tilesize', '-int', '36')
+# change minimize/maximize window effect
+write_setting('com.apple.dock', 'mineffect', '-string', 'scale')
+# minimize windows into their application's icon
+write_setting('com.apple.dock', 'minimize-to-application', '-bool', 'true')
+# enable spring loading for all dock items
+write_setting('com.apple.dock', 'enable-spring-load-actions-on-all-items', '-bool', 'true')
+# show indicator lights for open applications in the dock
+write_setting('com.apple.dock', 'show-process-indicators', '-bool', 'true')
+# automatically hide and show the dock
+write_setting('com.apple.dock', 'autohide', '-bool', 'true')
+# make dock icons of hidden applications translucent
+write_setting('com.apple.dock', 'showhidden', '-bool', 'true')
+
+printn('Restarting dock... ')
+execute('killall', 'Dock')
