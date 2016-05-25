@@ -80,7 +80,7 @@ execute('xcode-select', '--install')
 printn('Downloading Homebrew installer...')
 execute('curl', '-o', BREW_INSTALLER, '-fsSL', BREW_URL)
 
-printn('Instaling Homebrew...')
+printn('Installing Homebrew...')
 execute('ruby', BREW_INSTALLER)
 
 printn('Removing Homebrew installer...')
@@ -95,13 +95,13 @@ execute('brew', 'tap', 'caskroom/cask')
 print('== Homebrew packages ==')
 
 for pkg in BREW_PACKAGES:
-    printn('Instaling %s...' % pkg)
+    printn('Installing %s...' % pkg)
     execute('brew', 'install', pkg)
 
 print('== Homebrew casks ==')
 
 for pkg in CASK_PACKAGES:
-    printn('Instaling %s...' % pkg)
+    printn('Installing %s...' % pkg)
     execute('brew', 'cask', 'install', '--appdir=/Applications', pkg)
 
 print('== Dotfiles setup ==')
