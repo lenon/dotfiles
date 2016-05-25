@@ -35,6 +35,7 @@ CASK_PACKAGES = [
     'flux',
     'libreoffice',
     'macvim',
+    'microsoft-office',
     'spectacle',
     'spotify',
     'the-unarchiver',
