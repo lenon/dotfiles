@@ -106,7 +106,7 @@ for pkg in CASK_PACKAGES:
 
 print('== Dotfiles setup ==')
 
-printn('Changing shell to Fish...')
+printn('Changing shell to fish...')
 execute('sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin())
 
 printn('Linking fish files...')
@@ -132,5 +132,28 @@ write_setting('com.apple.dock', 'autohide', '-bool', 'true')
 # make dock icons of hidden applications translucent
 write_setting('com.apple.dock', 'showhidden', '-bool', 'true')
 
-printn('Restarting dock... ')
-execute('killall', 'Dock')
+print('== Finder settings ==')
+# show status bar
+write_setting('com.apple.finder', 'ShowStatusBar', '-bool', 'true')
+# show path bar
+write_setting('com.apple.finder', 'ShowPathbar', '-bool', 'true')
+# show icons for hard drives, servers and removable media on the desktop
+write_setting('com.apple.finder', 'ShowExternalHardDrivesOnDesktop', '-bool', 'true')
+write_setting('com.apple.finder', 'ShowHardDrivesOnDesktop', '-bool', 'true')
+write_setting('com.apple.finder', 'ShowMountedServersOnDesktop', '-bool', 'true')
+write_setting('com.apple.finder', 'ShowRemovableMediaOnDesktop', '-bool', 'true')
+# show file extensions
+write_setting('NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true')
+# display full path as finder window title
+write_setting('com.apple.finder', '_FXShowPosixPathInTitle', '-bool', 'true')
+# search the current folder by default
+write_setting('com.apple.finder', 'FXDefaultSearchScope', '-string', '"SCcf"')
+# disable the warning when changing a file extension
+write_setting('com.apple.finder', 'FXEnableExtensionChangeWarning', '-bool', 'false')
+
+for app in ['Dock', 'Finder']:
+    printn('Restarting %s... ' % app)
+    execute('killall', app)
+
+printn('Disabling local time machine backups... ')
+execute('sudo', 'tmutil', 'disablelocal')
