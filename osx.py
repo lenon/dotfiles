@@ -2,6 +2,7 @@
 import os
 import subprocess
 import sys
+import time
 
 #
 # Settings
@@ -51,67 +52,89 @@ CASK_PACKAGES = [
 # Setup script
 #
 
-# print without a new line at the end
+# Print without a new line at the end.
 def printn(string):
     sys.stdout.write(string)
-    sys.stdout.write(' ')
     sys.stdout.flush()
 
-# execute a command and send its output to /dev/null
-# print a message after command exits
-def execute(*args):
+# Executes a command and send its output to /dev/null.
+# Returns True if the command exits with 0.
+def cmd(args):
     devnull = open(os.devnull, 'w')
-    result = subprocess.call(args, stdout=devnull, stderr=devnull)
+    return subprocess.call(args, stdout=devnull, stderr=devnull) == 0
 
-    if result == 0:
+# Wait for a command to return 0.
+def wait_cmd(args):
+    while not cmd(args):
+        time.sleep(1)
+
+# Executes a command and prints a nice line about its execution status.
+def execute(description, command, skip_if=None, wait_until=None):
+    printn('%s... ' % description)
+
+    # do not execute a command if 'skip_if' command returns success
+    if skip_if and cmd(skip_if):
+        print('skipped')
+        return
+
+    if cmd(command):
+        if wait_until:
+            printn('(waiting) ')
+            wait_cmd(wait_until)
         print('success')
     else:
         print('error')
 
+# Writes a OS X setting using 'defaults' helper.
 def write_setting(*args):
     args = ('defaults', 'write') + args
-    printn(' '.join(args))
-    execute(*args)
+    execute(description=' '.join(args),
+            command=args)
 
 print('== Homebrew setup ==')
 
-printn('Make sure xcode command line tools are installed...')
-execute('xcode-select', '--install')
+execute(description='Installing command line tools',
+        command=['xcode-select', '--install'],
+        skip_if=['xcode-select', '-p'],
+        wait_until=['xcode-select', '-p'])
 
-printn('Downloading Homebrew installer...')
-execute('curl', '-o', BREW_INSTALLER, '-fsSL', BREW_URL)
+execute(description='Downloading Homebrew installer',
+        command=['curl', '-o', BREW_INSTALLER, '-fsSL', BREW_URL],
+        skip_if=['command', '-v', 'brew'])
 
-printn('Installing Homebrew...')
-execute('ruby', BREW_INSTALLER)
+execute(description='Installing Homebrew',
+        command=['ruby', BREW_INSTALLER],
+        skip_if=['command', '-v', 'brew'])
 
-printn('Removing Homebrew installer...')
-execute('rm', BREW_INSTALLER)
+execute(description='Removing Homebrew installer',
+        command=['rm', BREW_INSTALLER],
+        skip_if=['command', '-v', 'brew'])
 
-printn('Turning off Homebrew analytics...')
-execute('brew', 'analytics', 'off')
+execute(description='Turning off Homebrew analytics',
+        command=['brew', 'analytics', 'off'])
 
-printn('Installing Homebrew cask...')
-execute('brew', 'tap', 'caskroom/cask')
+execute(description='Installing Homebrew cask',
+        command=['brew', 'tap', 'caskroom/cask'])
 
 print('== Homebrew packages ==')
 
 for pkg in BREW_PACKAGES:
-    printn('Installing %s...' % pkg)
-    execute('brew', 'install', pkg)
+    execute(description='Installing %s' % pkg,
+            command=['brew', 'install', pkg])
 
 print('== Homebrew casks ==')
 
 for pkg in CASK_PACKAGES:
-    printn('Installing %s...' % pkg)
-    execute('brew', 'cask', 'install', '--appdir=/Applications', pkg)
+    execute(description='Installing %s' % pkg,
+            command=['brew', 'cask', 'install', '--appdir=/Applications', pkg])
 
 print('== Dotfiles setup ==')
 
-printn('Changing shell to fish...')
-execute('sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin())
+execute(description='Changing shell to fish',
+        command=['sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin()])
 
-printn('Linking fish files...')
-execute('stow', 'fish', '--no-folding')
+execute(description='Linking fish files',
+        command=['stow', 'fish', '--no-folding'])
 
 print('== OS X settings ==')
 print('== Dock settings ==')
@@ -153,8 +176,8 @@ write_setting('com.apple.finder', 'FXDefaultSearchScope', '-string', '"SCcf"')
 write_setting('com.apple.finder', 'FXEnableExtensionChangeWarning', '-bool', 'false')
 
 for app in ['Dock', 'Finder']:
-    printn('Restarting %s... ' % app)
-    execute('killall', app)
+    execute(description='Restarting %s' % app,
+            command=['killall', app])
 
-printn('Disabling local time machine backups... ')
-execute('sudo', 'tmutil', 'disablelocal')
+execute(description='Disabling local time machine backups',
+        command=['sudo', 'tmutil', 'disablelocal'])
