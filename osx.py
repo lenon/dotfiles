@@ -237,3 +237,11 @@ execute(description='Disabling local time machine backups',
 
 execute(description='Setting up brew crontab',
         command=['crontab', 'crontab/brew'])
+
+print('== Cleaning up space ==')
+
+execute(description='Cleaning up brew space',
+        command=['brew', 'cleanup'])
+
+execute(description='Cleaning up brew cask space',
+        command=['brew', 'cask', 'cleanup'])
