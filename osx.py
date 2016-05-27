@@ -15,6 +15,7 @@ BREW_PACKAGES = [
     'fish',
     'git',
     'homebrew/dupes/openssh',
+    'irssi',
     'neovim/neovim/neovim',
     'openssl',
     'python',
