@@ -158,8 +158,14 @@ execute(description='Linking fish files',
         command=['stow', 'fish', '--no-folding'])
 
 print('== OS X settings ==')
-print('== Dock settings ==')
 
+# use dark menus
+write_setting('-g', 'AppleInterfaceStyle', 'Dark')
+# keyboard key repeat rate
+write_setting('-g', 'InitialKeyRepeat', '-int', '10')
+write_setting('-g', 'KeyRepeat', '-int', '1')
+
+print('== Dock settings ==')
 # enable a hover effect for stack folders in grid view
 write_setting('com.apple.dock', 'mouse-over-hilite-stack', '-bool', 'true')
 # set the icon size of dock items to 36 pixels
@@ -188,7 +194,7 @@ write_setting('com.apple.finder', 'ShowHardDrivesOnDesktop', '-bool', 'true')
 write_setting('com.apple.finder', 'ShowMountedServersOnDesktop', '-bool', 'true')
 write_setting('com.apple.finder', 'ShowRemovableMediaOnDesktop', '-bool', 'true')
 # show file extensions
-write_setting('NSGlobalDomain', 'AppleShowAllExtensions', '-bool', 'true')
+write_setting('-g', 'AppleShowAllExtensions', '-bool', 'true')
 # display full path as finder window title
 write_setting('com.apple.finder', '_FXShowPosixPathInTitle', '-bool', 'true')
 # search the current folder by default
@@ -196,7 +202,7 @@ write_setting('com.apple.finder', 'FXDefaultSearchScope', '-string', '"SCcf"')
 # disable the warning when changing a file extension
 write_setting('com.apple.finder', 'FXEnableExtensionChangeWarning', '-bool', 'false')
 
-for app in ['Dock', 'Finder']:
+for app in ['Dock', 'Finder', 'SystemUIServer', 'cfprefsd']:
     execute(description='Restarting %s' % app,
             command=['killall', app])
 
