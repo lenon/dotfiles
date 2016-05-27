@@ -164,6 +164,15 @@ write_setting('-g', 'AppleInterfaceStyle', 'Dark')
 # keyboard key repeat rate
 write_setting('-g', 'InitialKeyRepeat', '-int', '10')
 write_setting('-g', 'KeyRepeat', '-int', '1')
+# enable full keyboard access for all controls
+write_setting('-g', 'AppleKeyboardUIMode', '-int', '3')
+# disable shadow in screenshots
+write_setting('com.apple.screencapture', 'disable-shadow', '-bool', 'true')
+# disable auto-correct
+write_setting('-g', 'NSAutomaticSpellingCorrectionEnabled', '-bool', 'false')
+# disable smart quotes and smart dashes
+write_setting('-g', 'NSAutomaticQuoteSubstitutionEnabled', '-bool', 'false')
+write_setting('-g', 'NSAutomaticDashSubstitutionEnabled', '-bool', 'false')
 
 print('== Dock settings ==')
 # enable a hover effect for stack folders in grid view
@@ -201,6 +210,10 @@ write_setting('com.apple.finder', '_FXShowPosixPathInTitle', '-bool', 'true')
 write_setting('com.apple.finder', 'FXDefaultSearchScope', '-string', '"SCcf"')
 # disable the warning when changing a file extension
 write_setting('com.apple.finder', 'FXEnableExtensionChangeWarning', '-bool', 'false')
+# use column view in all finder windows by default
+write_setting('com.apple.finder', 'FXPreferredViewStyle', 'Clmv')
+# avoid creation of .DS_Store files on network volumes
+write_setting('com.apple.desktopservices', 'DSDontWriteNetworkStores', '-bool', 'true')
 
 for app in ['Dock', 'Finder', 'SystemUIServer', 'cfprefsd']:
     execute(description='Restarting %s' % app,
