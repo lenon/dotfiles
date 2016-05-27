@@ -49,7 +49,7 @@ CASK_PACKAGES = [
 ]
 
 #
-# Setup script
+# Helper methods
 #
 
 # Print without a new line at the end.
@@ -102,6 +102,12 @@ def detect_fish_shell():
     expected_str = 'shell: /usr/local/bin/fish'
     return expected_str in output
 
+# Returns True if local Time-Machine backups are disabled.
+def detect_tm_disabled_local_backups():
+    plist = '/Library/Preferences/com.apple.TimeMachine.plist'
+    output = cmd_output(['defaults', 'read', plist, 'MobileBackups'])
+    return output.strip() == '0'
+
 # Returns True if brew is installed.
 brew_installed = lambda: cmd(['command', '-v', 'brew'])
 
@@ -110,6 +116,10 @@ xcode_installed = lambda: cmd(['xcode-select', '-p'])
 
 # Waits for command line utils installation.
 wait_xcode_prompt = lambda: wait_cmd(['xcode-select', '-p'])
+
+#
+# Setup
+#
 
 print('== Homebrew setup ==')
 
@@ -222,7 +232,8 @@ for app in ['Dock', 'Finder', 'SystemUIServer', 'cfprefsd']:
 print('== Extra settings ==')
 
 execute(description='Disabling local time machine backups',
-        command=['sudo', 'tmutil', 'disablelocal'])
+        command=['sudo', 'tmutil', 'disablelocal'],
+        skip_if=detect_tm_disabled_local_backups)
 
 execute(description='Setting up brew crontab',
         command=['crontab', 'crontab/brew'])
