@@ -219,5 +219,10 @@ for app in ['Dock', 'Finder', 'SystemUIServer', 'cfprefsd']:
     execute(description='Restarting %s' % app,
             command=['killall', app])
 
+print('== Extra settings ==')
+
 execute(description='Disabling local time machine backups',
         command=['sudo', 'tmutil', 'disablelocal'])
+
+execute(description='Setting up brew crontab',
+        command=['crontab', 'crontab/brew'])
