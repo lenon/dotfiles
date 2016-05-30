@@ -98,25 +98,36 @@ def write_setting(*args):
             command=args)
 
 # Returns True if fish shell is already user's shell.
-def detect_fish_shell():
+def fish_is_default_shell():
     output = cmd_output(['dscacheutil', '-q', 'user', '-a', 'name', os.getlogin()])
     expected_str = 'shell: /usr/local/bin/fish'
     return expected_str in output
 
 # Returns True if local Time-Machine backups are disabled.
-def detect_tm_disabled_local_backups():
+def tm_local_backup_disabled():
     plist = '/Library/Preferences/com.apple.TimeMachine.plist'
     output = cmd_output(['defaults', 'read', plist, 'MobileBackups'])
     return output.strip() == '0'
 
 # Returns True if brew is installed.
-brew_installed = lambda: cmd(['command', '-v', 'brew'])
+def brew_installed():
+    return cmd(['command', '-v', 'brew'])
+
+# Returns True if a brew package is installed.
+def brew_pkg_installed(name):
+    return cmd(['brew', 'list', name])
+
+# Returns True if a brew cask package is installed.
+def cask_pkg_installed(name):
+    return cmd(['brew', 'cask', 'list', name])
 
 # Returns True if command line utils is installed.
-xcode_installed = lambda: cmd(['xcode-select', '-p'])
+def xcode_installed():
+    return cmd(['xcode-select', '-p'])
 
 # Waits for command line utils installation.
-wait_xcode_prompt = lambda: wait_cmd(['xcode-select', '-p'])
+def wait_xcode_prompt():
+    return wait_cmd(['xcode-select', '-p'])
 
 #
 # Setup
@@ -151,19 +162,21 @@ print('== Homebrew packages ==')
 
 for pkg in BREW_PACKAGES:
     execute(description='Installing %s' % pkg,
-            command=['brew', 'install', pkg])
+            command=['brew', 'install', pkg],
+            skip_if=lambda: brew_pkg_installed(pkg))
 
 print('== Homebrew casks ==')
 
 for pkg in CASK_PACKAGES:
     execute(description='Installing %s' % pkg,
-            command=['brew', 'cask', 'install', '--appdir=/Applications', pkg])
+            command=['brew', 'cask', 'install', '--appdir=/Applications', pkg],
+            skip_if=lambda: cask_pkg_installed(pkg))
 
 print('== Dotfiles setup ==')
 
 execute(description='Changing shell to fish',
         command=['sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin()],
-        skip_if=detect_fish_shell)
+        skip_if=fish_is_default_shell)
 
 execute(description='Linking fish files',
         command=['stow', 'fish', '--no-folding'])
@@ -234,7 +247,7 @@ print('== Extra settings ==')
 
 execute(description='Disabling local time machine backups',
         command=['sudo', 'tmutil', 'disablelocal'],
-        skip_if=detect_tm_disabled_local_backups)
+        skip_if=tm_local_backup_disabled)
 
 execute(description='Setting up brew crontab',
         command=['crontab', 'crontab/brew'])
