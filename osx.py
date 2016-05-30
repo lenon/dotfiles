@@ -54,7 +54,7 @@ CASK_PACKAGES = [
 #
 
 # Print without a new line at the end.
-def printn(string):
+def write(string):
     sys.stdout.write(string)
     sys.stdout.flush()
 
@@ -72,7 +72,7 @@ def cmd_output(command):
 
 # Executes a command and prints a nice line about its execution status.
 def execute(description, command, skip_if=None, wait_until=None):
-    printn('%s... ' % description)
+    write('%s... ' % description)
 
     if skip_if and skip_if():
         print('skipped')
@@ -80,7 +80,7 @@ def execute(description, command, skip_if=None, wait_until=None):
 
     if cmd(command):
         if wait_until:
-            printn('(waiting) ')
+            write('(waiting) ')
             wait_until()
         print('success')
     else:
