@@ -179,6 +179,8 @@ execute(description='Changing shell to fish',
         command=['sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin()],
         skip_if=fish_is_default_shell)
 
+# 'no-folding' makes stow create a link for each file and not just a single link
+# for the root directory
 execute(description='Linking fish files',
         command=['stow', 'fish', '--no-folding'])
 
