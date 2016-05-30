@@ -253,7 +253,7 @@ execute(description='Disabling local time machine backups',
         skip_if=tm_local_backup_disabled)
 
 execute(description='Setting up brew crontab',
-        command=['crontab', 'crontab/brew'])
+        command=['crontab', 'cron/brew_update/cron'])
 
 print('== Cleaning up space ==')
 
