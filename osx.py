@@ -32,6 +32,7 @@ CASK_PACKAGES = [
     'adium',
     'android-file-transfer',
     'arduino',
+    'caskroom/fonts/font-hack',
     'caskroom/versions/iterm2-beta',
     'dropbox',
     'firefox',
