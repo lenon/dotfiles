@@ -188,9 +188,11 @@ print('== OS X settings ==')
 
 # use dark menus
 write_setting('-g', 'AppleInterfaceStyle', 'Dark')
+# disable press-and-hold for keys in favor of key repeat
+write_setting('-g', 'ApplePressAndHoldEnabled', '-bool', 'false')
 # keyboard key repeat rate
-write_setting('-g', 'InitialKeyRepeat', '-int', '10')
-write_setting('-g', 'KeyRepeat', '-int', '1')
+write_setting('-g', 'InitialKeyRepeat', '-int', '15')
+write_setting('-g', 'KeyRepeat', '-int', '2')
 # enable full keyboard access for all controls
 write_setting('-g', 'AppleKeyboardUIMode', '-int', '3')
 # disable shadow in screenshots
