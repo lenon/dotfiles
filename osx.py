@@ -34,6 +34,7 @@ CASK_PACKAGES = [
     'arduino',
     'caskroom/fonts/font-hack',
     'caskroom/versions/iterm2-beta',
+    'chromium',
     'dropbox',
     'firefox',
     'flux',
