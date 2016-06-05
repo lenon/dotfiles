@@ -47,3 +47,6 @@ set --export PATH /usr/local/sbin $PATH
 status --is-interactive; and . (rbenv init -|psub)
 
 set --export NVIM_TUI_ENABLE_TRUE_COLOR 1
+
+# load aliases
+source ~/.config/fish/aliases.fish
