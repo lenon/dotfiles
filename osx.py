@@ -254,8 +254,11 @@ execute(description='Disabling local time machine backups',
         command=['sudo', 'tmutil', 'disablelocal'],
         skip_if=tm_local_backup_disabled)
 
+execute(description='Remove current crontab',
+        command=['crontab', '-r'])
+
 execute(description='Setting up brew crontab',
-        command=['crontab', 'cron/cron'])
+        command=['crontab', 'cron/cronfile'])
 
 print('== Cleaning up space ==')
 
