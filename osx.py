@@ -51,6 +51,10 @@ CASK_PACKAGES = [
     'xquartz',
 ]
 
+LAUNCHD_FILES = [
+    'brew.plist'
+]
+
 #
 # Helper methods
 #
@@ -185,6 +189,18 @@ execute(description='Changing shell to fish',
 execute(description='Linking fish files',
         command=['stow', 'fish', '--no-folding'])
 
+execute(description='Linking launchd files',
+        command=['stow', 'launchd', '--no-folding'])
+
+for plist in LAUNCHD_FILES:
+    file = os.path.join(os.path.expanduser('~'), 'Library', 'LaunchAgents', plist)
+
+    execute(description='Unloading %s' % plist,
+            command=['launchctl', 'unload', file])
+
+    execute(description='Reloading %s' % plist,
+            command=['launchctl', 'load', file])
+
 print('== OS X settings ==')
 
 # use dark menus
@@ -254,12 +270,6 @@ print('== Extra settings ==')
 execute(description='Disabling local time machine backups',
         command=['sudo', 'tmutil', 'disablelocal'],
         skip_if=tm_local_backup_disabled)
-
-execute(description='Remove current crontab',
-        command=['crontab', '-r'])
-
-execute(description='Setting up brew crontab',
-        command=['crontab', 'cron/cronfile'])
 
 print('== Cleaning up space ==')
 
