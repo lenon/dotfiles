@@ -52,7 +52,7 @@ CASK_PACKAGES = [
 ]
 
 LAUNCHD_FILES = [
-    'brew.plist'
+    'brew_update.plist'
 ]
 
 #
