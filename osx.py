@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import os
 import subprocess
 import sys
@@ -59,11 +60,6 @@ LAUNCHD_FILES = [
 # Helper methods
 #
 
-# Print without a new line at the end.
-def write(string):
-    sys.stdout.write(string)
-    sys.stdout.flush()
-
 # Executes a command and returns True if it exits with 0.
 def cmd(command):
     devnull = open(os.devnull, 'w')
@@ -78,7 +74,7 @@ def cmd_output(command):
 
 # Executes a command and prints a nice line about its execution status.
 def execute(description, command, skip_if=None, wait_until=None):
-    write('%s... ' % description)
+    print('%s... ' % description, end='')
 
     if skip_if and skip_if():
         print('skipped')
@@ -86,7 +82,7 @@ def execute(description, command, skip_if=None, wait_until=None):
 
     if cmd(command):
         if wait_until:
-            write('(waiting) ')
+            print('(waiting) ', end='')
             wait_until()
         print('success')
     else:
