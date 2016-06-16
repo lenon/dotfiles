@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-from __future__ import print_function
 import os
-import subprocess
-import sys
 import time
+from utils import cmd, osx
 
 #
 # Settings
@@ -57,220 +55,147 @@ LAUNCHD_FILES = [
 ]
 
 #
-# Helper methods
-#
-
-# Executes a command and returns True if it exits with 0.
-def cmd(command):
-    devnull = open(os.devnull, 'w')
-    return subprocess.call(command, stdout=devnull, stderr=devnull) == 0
-
-# Executes a command and returns its output.
-def cmd_output(command):
-    try:
-        return subprocess.check_output(command, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError:
-        return False
-
-# Executes a command and prints a nice line about its execution status.
-def execute(description, command, skip_if=None, wait_until=None):
-    print('%s... ' % description, end='')
-
-    if skip_if and skip_if():
-        print('skipped')
-        return
-
-    if cmd(command):
-        if wait_until:
-            print('(waiting) ', end='')
-            wait_until()
-        print('success')
-    else:
-        print('error')
-
-# Wait for a command to return success.
-def wait_cmd(args):
-    while not cmd(args):
-        time.sleep(1)
-
-# Writes a OS X setting using 'defaults' helper.
-def write_setting(*args):
-    args = ('defaults', 'write') + args
-    execute(description=' '.join(args),
-            command=args)
-
-# Returns True if fish shell is already user's shell.
-def fish_is_default_shell():
-    output = cmd_output(['dscacheutil', '-q', 'user', '-a', 'name', os.getlogin()])
-    expected_str = 'shell: /usr/local/bin/fish'
-    return expected_str in output
-
-# Returns True if local Time-Machine backups are disabled.
-def tm_local_backup_disabled():
-    plist = '/Library/Preferences/com.apple.TimeMachine.plist'
-    output = cmd_output(['defaults', 'read', plist, 'MobileBackups'])
-    return output.strip() == '0'
-
-# Returns True if brew is installed.
-def brew_installed():
-    return cmd(['command', '-v', 'brew'])
-
-# Returns True if a brew package is installed.
-def brew_pkg_installed(name):
-    return cmd(['brew', 'list', name])
-
-# Returns True if a brew cask package is installed.
-def cask_pkg_installed(name):
-    return cmd(['brew', 'cask', 'list', name])
-
-# Returns True if command line utils is installed.
-def xcode_installed():
-    return cmd(['xcode-select', '-p'])
-
-# Waits for command line utils installation.
-def wait_xcode_prompt():
-    return wait_cmd(['xcode-select', '-p'])
-
-#
 # Setup
 #
 
 print('== Homebrew setup ==')
 
-execute(description='Installing command line tools',
-        command=['xcode-select', '--install'],
-        skip_if=xcode_installed,
-        wait_until=wait_xcode_prompt)
+cmd.execute(desc='Installing command line tools',
+            args='xcode-select --install',
+            skip_if=lambda: cmd.run('xcode-select -p'),
+            wait_for=lambda: cmd.wait('xcode-select -p'))
 
-execute(description='Downloading Homebrew installer',
-        command=['curl', '-o', BREW_INSTALLER, '-fsSL', BREW_URL],
-        skip_if=brew_installed)
+BREW_INSTALLED = lambda: cmd.run('command -v brew')
 
-execute(description='Installing Homebrew',
-        command=['ruby', BREW_INSTALLER],
-        skip_if=brew_installed)
+cmd.execute(desc='Downloading Homebrew installer',
+            args=['curl', '-o', BREW_INSTALLER, '-fsSL', BREW_URL],
+            skip_if=BREW_INSTALLED)
 
-execute(description='Removing Homebrew installer',
-        command=['rm', BREW_INSTALLER],
-        skip_if=brew_installed)
+cmd.execute(desc='Installing Homebrew',
+            args=['ruby', BREW_INSTALLER],
+            skip_if=BREW_INSTALLED)
 
-execute(description='Turning off Homebrew analytics',
-        command=['brew', 'analytics', 'off'])
+cmd.execute(desc='Removing Homebrew installer',
+            args=['rm', BREW_INSTALLER],
+            skip_if=BREW_INSTALLED)
 
-execute(description='Installing Homebrew cask',
-        command=['brew', 'tap', 'caskroom/cask'])
+cmd.execute(desc='Turning off Homebrew analytics',
+            args='brew analytics off')
+
+cmd.execute(desc='Installing Homebrew cask',
+            args='brew tap caskroom/cask')
 
 print('== Homebrew packages ==')
 
 for pkg in BREW_PACKAGES:
-    execute(description='Installing %s' % pkg,
-            command=['brew', 'install', pkg],
-            skip_if=lambda: brew_pkg_installed(pkg))
+    cmd.execute(desc='Installing %s' % pkg,
+                args=['brew', 'install', pkg],
+                skip_if=lambda: cmd.run(['brew', 'list', pkg]))
 
 print('== Homebrew casks ==')
 
 for pkg in CASK_PACKAGES:
-    execute(description='Installing %s' % pkg,
-            command=['brew', 'cask', 'install', '--appdir=/Applications', pkg],
-            skip_if=lambda: cask_pkg_installed(pkg))
+    cmd.execute(desc='Installing %s' % pkg,
+                args=['brew', 'cask', 'install', '--appdir=/Applications', pkg],
+                skip_if=lambda: cmd.run(['brew', 'cask', 'list', pkg]))
 
 print('== Dotfiles setup ==')
 
-execute(description='Changing shell to fish',
-        command=['sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin()],
-        skip_if=fish_is_default_shell)
+cmd.execute(desc='Changing shell to fish',
+            args=['sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin()],
+            skip_if=lambda: osx.get_user_shell() == 'fish')
 
 # 'no-folding' makes stow create a link for each file and not just a single link
 # for the root directory
-execute(description='Linking fish files',
-        command=['stow', 'fish', '--no-folding'])
+cmd.execute(desc='Linking fish files',
+            args=['stow', 'fish', '--no-folding'])
 
-execute(description='Linking launchd files',
-        command=['stow', 'launchd', '--no-folding'])
+cmd.execute(desc='Linking launchd files',
+            args=['stow', 'launchd', '--no-folding'])
 
 for plist in LAUNCHD_FILES:
     file = os.path.join(os.path.expanduser('~'), 'Library', 'LaunchAgents', plist)
 
-    execute(description='Unloading %s' % plist,
-            command=['launchctl', 'unload', file])
+    cmd.execute(desc='Unloading %s' % plist,
+                args=['launchctl', 'unload', file])
 
-    execute(description='Reloading %s' % plist,
-            command=['launchctl', 'load', file])
+    cmd.execute(desc='Reloading %s' % plist,
+                args=['launchctl', 'load', file])
 
 print('== OS X settings ==')
 
 # use dark menus
-write_setting('-g', 'AppleInterfaceStyle', 'Dark')
+osx.write('-g AppleInterfaceStyle Dark')
 # disable press-and-hold for keys in favor of key repeat
-write_setting('-g', 'ApplePressAndHoldEnabled', '-bool', 'false')
+osx.write('-g ApplePressAndHoldEnabled -bool false')
 # keyboard key repeat rate
-write_setting('-g', 'InitialKeyRepeat', '-int', '15')
-write_setting('-g', 'KeyRepeat', '-int', '2')
+osx.write('-g InitialKeyRepeat -int 15')
+osx.write('-g KeyRepeat -int 2')
 # enable full keyboard access for all controls
-write_setting('-g', 'AppleKeyboardUIMode', '-int', '3')
+osx.write('-g AppleKeyboardUIMode -int 3')
 # disable shadow in screenshots
-write_setting('com.apple.screencapture', 'disable-shadow', '-bool', 'true')
+osx.write('com.apple.screencapture disable-shadow -bool true')
 # disable auto-correct
-write_setting('-g', 'NSAutomaticSpellingCorrectionEnabled', '-bool', 'false')
+osx.write('-g NSAutomaticSpellingCorrectionEnabled -bool false')
 # disable smart quotes and smart dashes
-write_setting('-g', 'NSAutomaticQuoteSubstitutionEnabled', '-bool', 'false')
-write_setting('-g', 'NSAutomaticDashSubstitutionEnabled', '-bool', 'false')
+osx.write('-g NSAutomaticQuoteSubstitutionEnabled -bool false')
+osx.write('-g NSAutomaticDashSubstitutionEnabled -bool false')
 
 print('== Dock settings ==')
 # enable a hover effect for stack folders in grid view
-write_setting('com.apple.dock', 'mouse-over-hilite-stack', '-bool', 'true')
+osx.write('com.apple.dock mouse-over-hilite-stack -bool true')
 # set the icon size of dock items to 36 pixels
-write_setting('com.apple.dock', 'tilesize', '-int', '36')
+osx.write('com.apple.dock tilesize -int 36')
 # change minimize/maximize window effect
-write_setting('com.apple.dock', 'mineffect', '-string', 'scale')
+osx.write('com.apple.dock mineffect -string scale')
 # minimize windows into their application's icon
-write_setting('com.apple.dock', 'minimize-to-application', '-bool', 'true')
+osx.write('com.apple.dock minimize-to-application -bool true')
 # enable spring loading for all dock items
-write_setting('com.apple.dock', 'enable-spring-load-actions-on-all-items', '-bool', 'true')
+osx.write('com.apple.dock enable-spring-load-actions-on-all-items -bool true')
 # show indicator lights for open applications in the dock
-write_setting('com.apple.dock', 'show-process-indicators', '-bool', 'true')
+osx.write('com.apple.dock show-process-indicators -bool true')
 # automatically hide and show the dock
-write_setting('com.apple.dock', 'autohide', '-bool', 'true')
+osx.write('com.apple.dock autohide -bool true')
 # make dock icons of hidden applications translucent
-write_setting('com.apple.dock', 'showhidden', '-bool', 'true')
+osx.write('com.apple.dock showhidden -bool true')
 
 print('== Finder settings ==')
 # show status bar
-write_setting('com.apple.finder', 'ShowStatusBar', '-bool', 'true')
+osx.write('com.apple.finder ShowStatusBar -bool true')
 # show path bar
-write_setting('com.apple.finder', 'ShowPathbar', '-bool', 'true')
+osx.write('com.apple.finder ShowPathbar -bool true')
 # show icons for hard drives, servers and removable media on the desktop
-write_setting('com.apple.finder', 'ShowExternalHardDrivesOnDesktop', '-bool', 'true')
-write_setting('com.apple.finder', 'ShowHardDrivesOnDesktop', '-bool', 'true')
-write_setting('com.apple.finder', 'ShowMountedServersOnDesktop', '-bool', 'true')
-write_setting('com.apple.finder', 'ShowRemovableMediaOnDesktop', '-bool', 'true')
+osx.write('com.apple.finder ShowExternalHardDrivesOnDesktop -bool true')
+osx.write('com.apple.finder ShowHardDrivesOnDesktop -bool true')
+osx.write('com.apple.finder ShowMountedServersOnDesktop -bool true')
+osx.write('com.apple.finder ShowRemovableMediaOnDesktop -bool true')
 # show file extensions
-write_setting('-g', 'AppleShowAllExtensions', '-bool', 'true')
+osx.write('-g AppleShowAllExtensions -bool true')
 # display full path as finder window title
-write_setting('com.apple.finder', '_FXShowPosixPathInTitle', '-bool', 'true')
+osx.write('com.apple.finder _FXShowPosixPathInTitle -bool true')
 # search the current folder by default
-write_setting('com.apple.finder', 'FXDefaultSearchScope', '-string', '"SCcf"')
+osx.write('com.apple.finder FXDefaultSearchScope -string "SCcf"')
 # disable the warning when changing a file extension
-write_setting('com.apple.finder', 'FXEnableExtensionChangeWarning', '-bool', 'false')
+osx.write('com.apple.finder FXEnableExtensionChangeWarning -bool false')
 # use column view in all finder windows by default
-write_setting('com.apple.finder', 'FXPreferredViewStyle', 'Clmv')
+osx.write('com.apple.finder FXPreferredViewStyle Clmv')
 # avoid creation of .DS_Store files on network volumes
-write_setting('com.apple.desktopservices', 'DSDontWriteNetworkStores', '-bool', 'true')
+osx.write('com.apple.desktopservices DSDontWriteNetworkStores -bool true')
 
 for app in ['Dock', 'Finder', 'SystemUIServer', 'cfprefsd']:
-    execute(description='Restarting %s' % app,
-            command=['killall', app])
+    cmd.execute(desc='Restarting %s' % app,
+                args=['killall', app])
 
 print('== Extra settings ==')
 
-execute(description='Disabling local time machine backups',
-        command=['sudo', 'tmutil', 'disablelocal'],
-        skip_if=tm_local_backup_disabled)
+cmd.execute(desc='Disabling local time machine backups',
+            args=['sudo', 'tmutil', 'disablelocal'],
+            skip_if=lambda: osx.tm_local_backup_disabled())
 
 print('== Cleaning up space ==')
 
-execute(description='Cleaning up brew space',
-        command=['brew', 'cleanup'])
+cmd.execute(desc='Cleaning up brew space',
+            args=['brew', 'cleanup'])
 
-execute(description='Cleaning up brew cask space',
-        command=['brew', 'cask', 'cleanup'])
+cmd.execute(desc='Cleaning up brew cask space',
+            args=['brew', 'cask', 'cleanup'])
