@@ -50,6 +50,11 @@ CASK_PACKAGES = [
     'xquartz',
 ]
 
+STOW_DIRS = [
+    'fish',
+    'launchd'
+]
+
 LAUNCHD_FILES = [
     'brew_update.plist'
 ]
@@ -105,13 +110,11 @@ cmd.execute(desc='Changing shell to fish',
             args=['sudo', 'chsh', '-s', '/usr/local/bin/fish', os.getlogin()],
             skip_if=lambda: osx.get_user_shell() == 'fish')
 
-# 'no-folding' makes stow create a link for each file and not just a single link
-# for the root directory
-cmd.execute(desc='Linking fish files',
-            args=['stow', 'fish', '--no-folding'])
-
-cmd.execute(desc='Linking launchd files',
-            args=['stow', 'launchd', '--no-folding'])
+for _dir in STOW_DIRS:
+    # 'no-folding' makes stow create a link for each file and not just a single
+    # link for the root directory
+    cmd.execute(desc='Linking %s files' % _dir,
+                args=['stow', _dir, '--no-folding'])
 
 for plist in LAUNCHD_FILES:
     file = os.path.join(os.path.expanduser('~'), 'Library', 'LaunchAgents', plist)
@@ -142,6 +145,7 @@ osx.write('-g NSAutomaticQuoteSubstitutionEnabled -bool false')
 osx.write('-g NSAutomaticDashSubstitutionEnabled -bool false')
 
 print('== Dock settings ==')
+
 # enable a hover effect for stack folders in grid view
 osx.write('com.apple.dock mouse-over-hilite-stack -bool true')
 # set the icon size of dock items to 36 pixels
