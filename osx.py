@@ -96,7 +96,7 @@ print('== Homebrew casks ==')
 
 for pkg in CASK_PACKAGES:
     cmd.execute(desc='Installing %s' % pkg,
-                args=['brew', 'cask', 'install', '--appdir=/Applications', pkg],
+                args=['brew', 'cask', 'install', pkg],
                 skip_if=lambda: cmd.run(['brew', 'cask', 'list', pkg]))
 
 print('== Dotfiles setup ==')
