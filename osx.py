@@ -193,13 +193,13 @@ for app in ['Dock', 'Finder', 'SystemUIServer', 'cfprefsd']:
 print('== Extra settings ==')
 
 cmd.execute(desc='Disabling local time machine backups',
-            args=['sudo', 'tmutil', 'disablelocal'],
+            args='sudo tmutil disablelocal',
             skip_if=lambda: osx.tm_local_backup_disabled())
 
 print('== Cleaning up space ==')
 
 cmd.execute(desc='Cleaning up brew space',
-            args=['brew', 'cleanup'])
+            args='brew cleanup')
 
 cmd.execute(desc='Cleaning up brew cask space',
-            args=['brew', 'cask', 'cleanup'])
+            args='brew cask cleanup')
