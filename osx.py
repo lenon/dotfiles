@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import time
 from utils import cmd, osx
 
 #
@@ -194,7 +193,7 @@ print('== Extra settings ==')
 
 cmd.execute(desc='Disabling local time machine backups',
             args='sudo tmutil disablelocal',
-            skip_if=lambda: osx.tm_local_backup_disabled())
+            skip_if=osx.tm_local_backup_disabled)
 
 print('== Cleaning up space ==')
 
