@@ -39,14 +39,21 @@ if not set --query __fish_prompt_hostname
   set --global __fish_prompt_hostname (hostname | cut -d . -f 1)
 end
 
-# other stuff
+# set vim as default editor
 set --export EDITOR vim
+
+# add brew packages on PATH
 set --export PATH /usr/local/bin $PATH
 set --export PATH /usr/local/sbin $PATH
 
+# rbenv initialization
 status --is-interactive; and . (rbenv init -|psub)
 
+# enable true colors on neovim
 set --export NVIM_TUI_ENABLE_TRUE_COLOR 1
+
+# golang workspace location
+set --export GOPATH "$HOME/dev/go"
 
 # load aliases
 source ~/.config/fish/aliases.fish

@@ -7,6 +7,7 @@ BREW_PACKAGES = [
     'ag',
     'fish',
     'git',
+    'go',
     'homebrew/dupes/openssh',
     'irssi',
     'neovim/neovim/neovim',
