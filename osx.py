@@ -3,10 +3,6 @@ import os
 import tempfile
 from utils import cmd, osx
 
-#
-# Settings
-#
-
 BREW_PACKAGES = [
     'ag',
     'fish',
@@ -56,10 +52,6 @@ STOW_DIRS = [
 LAUNCHD_FILES = [
     'brew_update.plist'
 ]
-
-#
-# Setup
-#
 
 print('== Homebrew setup ==')
 
