@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 import os
+import tempfile
 from utils import cmd, osx
 
 #
 # Settings
 #
 
-BREW_URL = 'https://raw.githubusercontent.com/Homebrew/install/master/install'
-BREW_INSTALLER = '/tmp/homebrew_installer.rb'
 BREW_PACKAGES = [
     'ag',
     'fish',
@@ -69,19 +68,17 @@ cmd.execute(desc='Installing command line tools',
             skip_if=lambda: cmd.run('xcode-select -p'),
             wait_for=lambda: cmd.wait('xcode-select -p'))
 
+BREW_URL = 'https://raw.githubusercontent.com/Homebrew/install/master/install'
 BREW_INSTALLED = lambda: cmd.run('command -v brew')
 
-cmd.execute(desc='Downloading Homebrew installer',
-            args=['curl', '-o', BREW_INSTALLER, '-fsSL', BREW_URL],
-            skip_if=BREW_INSTALLED)
+with tempfile.NamedTemporaryFile() as tmp:
+    cmd.execute(desc='Downloading Homebrew installer',
+                args=['curl', '-o', tmp.name, '-fsSL', BREW_URL],
+                skip_if=BREW_INSTALLED)
 
-cmd.execute(desc='Installing Homebrew',
-            args=['ruby', BREW_INSTALLER],
-            skip_if=BREW_INSTALLED)
-
-cmd.execute(desc='Removing Homebrew installer',
-            args=['rm', BREW_INSTALLER],
-            skip_if=BREW_INSTALLED)
+    cmd.execute(desc='Installing Homebrew',
+                args=['ruby', tmp.name],
+                skip_if=BREW_INSTALLED)
 
 cmd.execute(desc='Turning off Homebrew analytics',
             args='brew analytics off')
@@ -89,19 +86,23 @@ cmd.execute(desc='Turning off Homebrew analytics',
 cmd.execute(desc='Installing Homebrew cask',
             args='brew tap caskroom/cask')
 
-print('== Homebrew packages ==')
+print('== Installing brew packages ==')
 
 for pkg in BREW_PACKAGES:
     cmd.execute(desc='Installing %s' % pkg,
                 args=['brew', 'install', pkg],
                 skip_if=lambda: cmd.run(['brew', 'list', pkg]))
 
-print('== Homebrew casks ==')
-
 for pkg in CASK_PACKAGES:
     cmd.execute(desc='Installing %s' % pkg,
                 args=['brew', 'cask', 'install', pkg],
                 skip_if=lambda: cmd.run(['brew', 'cask', 'list', pkg]))
+
+cmd.execute(desc='Cleaning up brew space',
+            args='brew cleanup')
+
+cmd.execute(desc='Cleaning up brew cask space',
+            args='brew cask cleanup')
 
 print('== Dotfiles setup ==')
 
@@ -142,9 +143,6 @@ osx.write('-g NSAutomaticSpellingCorrectionEnabled -bool false')
 # disable smart quotes and smart dashes
 osx.write('-g NSAutomaticQuoteSubstitutionEnabled -bool false')
 osx.write('-g NSAutomaticDashSubstitutionEnabled -bool false')
-
-print('== Dock settings ==')
-
 # enable a hover effect for stack folders in grid view
 osx.write('com.apple.dock mouse-over-hilite-stack -bool true')
 # set the icon size of dock items to 36 pixels
@@ -161,8 +159,6 @@ osx.write('com.apple.dock show-process-indicators -bool true')
 osx.write('com.apple.dock autohide -bool true')
 # make dock icons of hidden applications translucent
 osx.write('com.apple.dock showhidden -bool true')
-
-print('== Finder settings ==')
 # show status bar
 osx.write('com.apple.finder ShowStatusBar -bool true')
 # show path bar
@@ -194,11 +190,3 @@ print('== Extra settings ==')
 cmd.execute(desc='Disabling local time machine backups',
             args='sudo tmutil disablelocal',
             skip_if=osx.tm_local_backup_disabled)
-
-print('== Cleaning up space ==')
-
-cmd.execute(desc='Cleaning up brew space',
-            args='brew cleanup')
-
-cmd.execute(desc='Cleaning up brew cask space',
-            args='brew cask cleanup')
