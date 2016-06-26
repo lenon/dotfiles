@@ -47,7 +47,8 @@ CASK_PACKAGES = [
 
 STOW_DIRS = [
     'fish',
-    'launchd'
+    'launchd',
+    'ruby'
 ]
 
 LAUNCHD_FILES = [
@@ -183,3 +184,15 @@ print('== Extra settings ==')
 cmd.execute(desc='Disabling local time machine backups',
             args='sudo tmutil disablelocal',
             skip_if=osx.tm_local_backup_disabled)
+
+print('== Ruby ==')
+
+cmd.execute(desc='Installing Ruby',
+            args='rbenv install 2.3.1',
+            skip_if=lambda: '2.3.1' in cmd.output('rbenv versions --bare'))
+
+cmd.execute(desc='Set default Ruby',
+            args='rbenv global 2.3.1')
+
+cmd.execute(desc='Install gems',
+            args='gem install pry rubocop rubocop-rspec git_bumper')
