@@ -4,6 +4,7 @@ import tempfile
 from utils import cmd, osx
 
 BREW_PACKAGES = [
+    'ack',
     'ag',
     'fish',
     'git',
