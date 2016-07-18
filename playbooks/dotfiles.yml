@@ -1,0 +1,12 @@
+---
+- hosts: dotfiles
+  gather_facts: no
+  roles:
+    - { role: homebrew }
+    - { role: homebrew_cask }
+    - { role: dotfiles }
+    - { role: fish }
+    - { role: ruby }
+    - { role: osx }
+    - { role: timemachine }
+    - { role: launchd }

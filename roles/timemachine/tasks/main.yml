@@ -1,0 +1,3 @@
+- name: disable local backups
+  command: tmutil disablelocal
+  become: yes

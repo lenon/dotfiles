@@ -1,0 +1,20 @@
+- name: get installed rubies
+  command: rbenv versions --bare
+  register: rubies
+
+- name: install ruby versions
+  command: 'rbenv install --skip-existing {{ item }}'
+  with_items: '{{ dotfiles.ruby.versions }}'
+  when: item not in rubies.stdout
+
+- name: set the default ruby version
+  command: 'rbenv global {{ dotfiles.ruby.default }}'
+
+- name: get installed gems
+  command: rbenv exec gem list
+  register: gems
+
+- name: install default gems
+  command: 'rbenv exec gem install --no-doc {{ item }}'
+  with_items: '{{ dotfiles.ruby.gems }}'
+  when: item not in gems.stdout

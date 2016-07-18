@@ -1,0 +1,9 @@
+- name: get current user name
+  command: id -un
+  register: current_user
+
+- name: change user shell
+  user:
+    name: '{{ current_user.stdout }}'
+    shell: /usr/local/bin/fish
+  become: yes

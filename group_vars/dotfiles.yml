@@ -1,0 +1,65 @@
+dotfiles:
+  confs:
+    - fish
+    - launchd
+    - ruby
+  launchd:
+    services:
+      - ~/Library/LaunchAgents/brew_update.plist
+  homebrew:
+    taps:
+      - homebrew/dupes
+      - neovim/neovim
+    packages:
+      - ack
+      - ag
+      - fish
+      - git
+      - go
+      - irssi
+      - neovim
+      - openssh
+      - openssl
+      - python
+      - python3
+      - rbenv
+      - stow
+      - tmux
+      - tree
+      - vim
+  homebrew_cask:
+    taps:
+      - caskroom/fonts
+      - caskroom/versions
+    apps:
+      - 1password
+      - adium
+      - android-file-transfer
+      - arduino
+      - chromium
+      - dropbox
+      - firefox
+      - flux
+      - font-hack
+      - iterm2-beta
+      - libreoffice
+      - macvim
+      - microsoft-office
+      - spectacle
+      - spotify
+      - the-unarchiver
+      - transmission
+      - virtualbox
+      - virtualbox-extension-pack
+      - vlc
+      - xquartz
+  ruby:
+    versions:
+      - 2.3.1
+      - 2.4.0-dev
+    default: 2.3.1
+    gems:
+      - git_bumper
+      - pry
+      - rubocop
+      - rubocop-rspec

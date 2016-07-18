@@ -1,0 +1,17 @@
+- name: tap casks
+  homebrew_tap:
+    tap: caskroom/cask
+
+- name: tap versions
+  homebrew_tap:
+    tap: '{{ item }}'
+  with_items: '{{ dotfiles.homebrew_cask.taps }}'
+
+- name: install casks
+  homebrew_cask:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ dotfiles.homebrew_cask.apps }}'
+
+- name: clean up space
+  command: brew cask cleanup

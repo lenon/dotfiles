@@ -1,0 +1,3 @@
+- name: unload launchd services
+  command: 'launchctl unload {{ item }}'
+  with_items: '{{ dotfiles.launchd.services }}'
