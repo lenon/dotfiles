@@ -1,0 +1,10 @@
+- name: symlink preferences file
+  file:
+    src: '~/Dropbox/macOS_Preferences/{{ item }}'
+    dest: '~/Library/Preferences/{{ item }}'
+    state: link
+    force: yes
+  with_items: '{{ dotfiles.plists }}'
+
+- name: restart cfprefsd
+  command: killall cfprefsd

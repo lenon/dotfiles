@@ -6,6 +6,8 @@ dotfiles:
   launchd:
     services:
       - ~/Library/LaunchAgents/brew_update.plist
+  plists:
+    - com.googlecode.iterm2.plist
   homebrew:
     taps:
       - homebrew/dupes
