@@ -44,6 +44,7 @@ dotfiles:
       - firefox
       - flux
       - font-hack
+      - font-dejavu-sans
       - iterm2-beta
       - libreoffice
       - macvim
