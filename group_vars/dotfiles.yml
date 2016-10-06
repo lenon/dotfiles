@@ -3,6 +3,7 @@ dotfiles:
     - fish
     - launchd
     - ruby
+    - git
   launchd:
     services:
       - ~/Library/LaunchAgents/brew_update.plist
