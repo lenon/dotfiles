@@ -40,7 +40,7 @@ if not set --query __fish_prompt_hostname
 end
 
 # set vim as default editor
-set --export EDITOR vim
+set --export EDITOR nvim
 
 # add brew packages on PATH
 set --export PATH /usr/local/bin $PATH
