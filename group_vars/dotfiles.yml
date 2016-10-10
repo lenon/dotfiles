@@ -20,6 +20,7 @@ dotfiles:
       - git
       - go
       - irssi
+      - leiningen
       - neovim
       - openssh
       - openssl
