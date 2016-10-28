@@ -49,9 +49,6 @@ set --export PATH /usr/local/sbin $PATH
 # rbenv initialization
 status --is-interactive; and . (rbenv init -|psub)
 
-# enable true colors on neovim
-set --export NVIM_TUI_ENABLE_TRUE_COLOR 1
-
 # golang workspace location
 set --export GOPATH "$HOME/dev/go"
 
