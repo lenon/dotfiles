@@ -5,7 +5,7 @@ function fish_prompt
     set_color $fish_color_error
   end
 
-  printf '%s@%s%s> ' (prompt_pwd) $__fish_prompt_hostname (__fish_git_prompt)
+  printf '%s%s> ' (prompt_pwd) (__fish_git_prompt)
 
   set_color normal
 end

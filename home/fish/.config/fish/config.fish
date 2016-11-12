@@ -34,11 +34,6 @@ set --global __fish_git_prompt_show_informative_status 1
 set --global __fish_git_prompt_showcolorhints 1
 set --global __fish_git_prompt_color $fish_color_cwd
 
-# hostname cache
-if not set --query __fish_prompt_hostname
-  set --global __fish_prompt_hostname (hostname | cut -d . -f 1)
-end
-
 # set vim as default editor
 set --export EDITOR nvim
 
