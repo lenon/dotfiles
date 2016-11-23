@@ -12,6 +12,7 @@ dotfiles:
   homebrew:
     taps:
       - homebrew/dupes
+      - homebrew/science
       - neovim/neovim
     packages:
       - ack
@@ -26,6 +27,7 @@ dotfiles:
       - openssl
       - python
       - python3
+      - r
       - rbenv
       - stow
       - tmux
