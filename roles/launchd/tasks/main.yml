@@ -1,7 +1,0 @@
-- name: unload launchd services
-  command: 'launchctl unload {{ item }}'
-  with_items: '{{ dotfiles.launchd.services }}'
-
-- name: load launchd services
-  command: 'launchctl load {{ item }}'
-  with_items: '{{ dotfiles.launchd.services }}'

@@ -9,5 +9,4 @@
     - { role: ruby }
     - { role: osx }
     - { role: timemachine }
-    - { role: launchd }
     - { role: plists }
