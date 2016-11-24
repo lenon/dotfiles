@@ -1,12 +1,12 @@
 # dotfiles
 
-These are my dotfiles. This project includes my development environment and my
-Macbook setup.
+These are my dotfiles. This project includes my development environment and the
+setup I use on macOS.
 
 ## Requirements
 
-* Mac OS X/macOS
-* Terminal
+* macOS
+* Terminal app
 
 ## Usage
 
