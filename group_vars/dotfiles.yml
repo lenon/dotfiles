@@ -42,8 +42,8 @@ dotfiles:
       - dropbox
       - firefox
       - flux
-      - font-hack
       - font-dejavu-sans
+      - font-hack
       - iterm2-beta
       - libreoffice
       - macvim
