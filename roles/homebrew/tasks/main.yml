@@ -1,5 +1,10 @@
+- name: get analytics state
+  command: brew analytics
+  register: brew_analytics
+
 - name: turn off analytics
   command: brew analytics off
+  when: '"disabled" not in brew_analytics.stdout'
 
 - name: update
   homebrew: update_homebrew=yes
