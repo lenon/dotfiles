@@ -2,10 +2,15 @@
   command: rbenv versions --bare
   register: rubies
 
+- name: update ruby versions
+  command: 'brew upgrade ruby-build'
+  with_items: '{{ dotfiles.ruby.versions }}'
+  when: item not in rubies.stdout_lines
+
 - name: install ruby versions
   command: 'rbenv install --skip-existing {{ item }}'
   with_items: '{{ dotfiles.ruby.versions }}'
-  when: item not in rubies.stdout
+  when: item not in rubies.stdout_lines
 
 - name: set the default ruby version
   command: 'rbenv global {{ dotfiles.ruby.default }}'
