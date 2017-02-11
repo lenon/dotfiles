@@ -52,9 +52,8 @@ dotfiles:
       - xquartz
   ruby:
     versions:
-      - 2.3.3
-      - 2.4.0-preview3
-    default: 2.3.1
+      - 2.4.0
+    default: 2.4.0
     gems:
       - git_bumper
       - pry
