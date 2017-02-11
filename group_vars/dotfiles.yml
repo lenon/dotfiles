@@ -16,7 +16,6 @@ dotfiles:
       - fish
       - git
       - go
-      - irssi
       - leiningen
       - neovim
       - openssh
@@ -35,19 +34,14 @@ dotfiles:
       - caskroom/versions
     apps:
       - 1password
-      - adium
       - android-file-transfer
       - arduino
-      - chromium
       - dropbox
       - firefox
-      - flux
       - font-dejavu-sans
       - font-hack
       - iterm2-beta
       - libreoffice
-      - macvim
-      - microsoft-office
       - spectacle
       - spotify
       - the-unarchiver
