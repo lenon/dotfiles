@@ -1,0 +1,35 @@
+- name: get firewall state
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate
+  register: firewall_state
+
+- name: get stealthmode state
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode
+  register: stealthmode_state
+
+- name: get allowsigned state
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --getallowsigned
+  register: allowsigned_state
+
+- name: enable firewall
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+  become: yes
+  when: '"enabled" not in firewall_state.stdout'
+
+- name: enable stealthmode
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+  become: yes
+  when: '"enabled" not in stealthmode_state.stdout'
+
+- name: disable incoming connections for built-in signed apps
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsigned off
+  become: yes
+  when: '"built-in signed software DISABLED" not in allowsigned_state.stdout'
+
+- name: disable incoming connections for downloaded signed apps
+  command: /usr/libexec/ApplicationFirewall/socketfilterfw --setallowsignedapp off
+  become: yes
+  when: '"downloaded software DISABLED" not in allowsigned_state.stdout'
+
+- name: restart socketfilterfw
+  command: pkill -HUP socketfilterfw
+  become: yes

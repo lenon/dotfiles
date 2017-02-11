@@ -2,6 +2,7 @@
 - hosts: dotfiles
   gather_facts: no
   roles:
+    - { role: firewall }
     - { role: homebrew }
     - { role: homebrew_cask }
     - { role: dotfiles }
