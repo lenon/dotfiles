@@ -1,3 +1,0 @@
-- name: symlink dotfiles
-  shell: 'stow --no-folding --dir ../home --target {{ lookup("env", "HOME") }} {{ item }}'
-  with_items: '{{ dotfiles.confs }}'

@@ -1,12 +1,4 @@
 dotfiles:
-  confs:
-    - fish
-    - ruby
-    - git
-  plists:
-    - com.googlecode.iterm2.plist
-  homebrew:
-    taps:
       - homebrew/dupes
       - homebrew/science
       - neovim/neovim
@@ -24,7 +16,6 @@ dotfiles:
       - python3
       - r
       - rbenv
-      - stow
       - tmux
       - tree
       - vim

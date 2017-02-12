@@ -5,7 +5,6 @@
     - { role: firewall }
     - { role: homebrew }
     - { role: homebrew_cask }
-    - { role: dotfiles }
     - { role: fish }
     - { role: ruby }
     - { role: osx }
