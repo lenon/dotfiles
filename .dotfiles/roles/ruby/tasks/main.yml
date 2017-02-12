@@ -4,16 +4,16 @@
 
 - name: update ruby versions
   command: 'brew upgrade ruby-build'
-  with_items: '{{ dotfiles.ruby.versions }}'
+  with_items: '{{ ruby.versions }}'
   when: item not in rubies.stdout_lines
 
 - name: install ruby versions
   command: 'rbenv install --skip-existing {{ item }}'
-  with_items: '{{ dotfiles.ruby.versions }}'
+  with_items: '{{ ruby.versions }}'
   when: item not in rubies.stdout_lines
 
 - name: set the default ruby version
-  command: 'rbenv global {{ dotfiles.ruby.default }}'
+  command: 'rbenv global {{ ruby.default }}'
 
 - name: get installed gems
   command: rbenv exec gem list
@@ -21,5 +21,5 @@
 
 - name: install default gems
   command: 'rbenv exec gem install --no-doc {{ item }}'
-  with_items: '{{ dotfiles.ruby.gems }}'
+  with_items: '{{ ruby.gems }}'
   when: item not in gems.stdout

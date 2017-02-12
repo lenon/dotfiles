@@ -4,7 +4,7 @@
     dest: '~/Library/Preferences/{{ item }}'
     state: link
     force: yes
-  with_items: '{{ dotfiles.plists }}'
+  with_items: '{{ plists }}'
 
 - name: restart cfprefsd
   command: killall cfprefsd

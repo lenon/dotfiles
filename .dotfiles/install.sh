@@ -18,4 +18,4 @@ if ! command -v ansible-playbook > /dev/null; then
   brew install ansible
 fi
 
-ansible-playbook -i hosts.ini --ask-sudo-pass playbooks/dotfiles.yml
+ansible-playbook -i localhost, --ask-sudo-pass playbooks/dotfiles.yml

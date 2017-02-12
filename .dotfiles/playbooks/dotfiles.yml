@@ -1,12 +1,69 @@
 ---
-- hosts: dotfiles
+- hosts: localhost
+  connection: local
   gather_facts: no
+  vars:
+    homebrew:
+      taps:
+        - homebrew/dupes
+        - homebrew/science
+        - neovim/neovim
+      packages:
+        - ack
+        - ag
+        - fish
+        - git
+        - go
+        - leiningen
+        - neovim
+        - openssh
+        - openssl
+        - python
+        - python3
+        - r
+        - rbenv
+        - tmux
+        - tree
+        - vim
+    homebrew_cask:
+      taps:
+        - caskroom/fonts
+        - caskroom/versions
+      apps:
+        - 1password
+        - android-file-transfer
+        - arduino
+        - dropbox
+        - firefox
+        - font-dejavu-sans
+        - font-hack
+        - iterm2-beta
+        - libreoffice
+        - spectacle
+        - spotify
+        - the-unarchiver
+        - transmission
+        - virtualbox
+        - virtualbox-extension-pack
+        - vlc
+        - xquartz
+    plists:
+      - com.googlecode.iterm2.plist
+    ruby:
+      versions:
+        - 2.4.0
+      default: 2.4.0
+      gems:
+        - git_bumper
+        - pry
+        - rubocop
+        - rubocop-rspec
   roles:
-    - { role: firewall }
-    - { role: homebrew }
-    - { role: homebrew_cask }
-    - { role: fish }
-    - { role: ruby }
-    - { role: osx }
-    - { role: timemachine }
-    - { role: plists }
+    - firewall
+    - homebrew
+    - homebrew_cask
+    - fish
+    - ruby
+    - osx
+    - timemachine
+    - plists

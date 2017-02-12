@@ -5,13 +5,13 @@
 - name: tap versions
   homebrew_tap:
     tap: '{{ item }}'
-  with_items: '{{ dotfiles.homebrew_cask.taps }}'
+  with_items: '{{ homebrew_cask.taps }}'
 
 - name: install casks
   homebrew_cask:
     name: '{{ item }}'
     state: present
-  with_items: '{{ dotfiles.homebrew_cask.apps }}'
+  with_items: '{{ homebrew_cask.apps }}'
 
 - name: clean up space
   command: brew cask cleanup
