@@ -11,6 +11,7 @@
   homebrew_cask:
     name: '{{ item }}'
     state: present
+    update_homebrew: no
   with_items: '{{ homebrew_cask.apps }}'
 
 - name: clean up space
