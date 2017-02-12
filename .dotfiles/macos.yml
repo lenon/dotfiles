@@ -59,11 +59,11 @@
         - rubocop
         - rubocop-rspec
   roles:
-    - firewall
-    - homebrew
-    - homebrew_cask
-    - fish
-    - ruby
-    - osx
-    - timemachine
-    - plists
+    - roles/firewall
+    - roles/homebrew
+    - roles/homebrew_cask
+    - roles/fish
+    - roles/ruby
+    - roles/osx
+    - roles/timemachine
+    - roles/plists
