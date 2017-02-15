@@ -96,6 +96,24 @@
   osx_defaults: domain=com.apple.desktopservices key=DSDontWriteNetworkStores
     type=bool value=true
 
+- name: disable siri (1)
+  osx_defaults:
+    domain: com.apple.Siri
+    key: '{{ item }}'
+    type: bool
+    value: true
+  with_items:
+    - Disabled
+    - UserHasDeclinedEnable
+
+- name: disable siri (2)
+  osx_defaults: domain=com.apple.Siri key=StatusMenuVisible
+    type=bool value=false
+
+- name: disable siri (3)
+  osx_defaults: domain=com.apple.assistant.support key="Assistant Enabled"
+    type=bool value=false
+
 - name: restart affected services and apps
   command: 'killall {{ item }}'
   with_items:
