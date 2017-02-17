@@ -1,5 +1,0 @@
-.DS_Store
-cron/daily/log/*
-!cron/daily/log/.gitkeep
-*.pyc
-__pycache__
