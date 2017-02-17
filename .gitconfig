@@ -1,11 +1,17 @@
 [user]
-name = Lenon Marcel
-email = lenon.marcel@gmail.com
+  name = Lenon Marcel
+  email = lenon.marcel@gmail.com
+
+[color]
+  ui = true
 
 [push]
-; push the current branch to update a branch with the same name on the receiving
-; end
-default = current
+  ; push the current branch to update a branch with the same name on the receiving
+  ; end
+  default = current
 
 [credential]
-helper =
+  helper =
+
+[alias]
+  l = log --oneline --graph --decorate
